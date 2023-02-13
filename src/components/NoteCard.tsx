@@ -4,24 +4,13 @@ import { note } from "../features/notesSlice";
 interface Props {
   link: string;
   note: note;
-  isDarkMode: boolean;
 }
 
-const NoteCard = ({ link, note, isDarkMode }: Props) => {
+const NoteCard = ({ link, note }: Props) => {
   return (
     <Link to={link} key={note.id}>
-      <li
-        className={`w-full min-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border border-gray-600 ${
-          isDarkMode
-            ? "bg-darkmode hover:border-gray-400"
-            : "bg-gray-50 hover:shadow-perfect"
-        }`}
-      >
-        <h2
-          className={`text-lg font-bold tracking-wide break-words mb-1 pb-1 border-b ${
-            isDarkMode ? "border-gray-600" : "border-gray-400"
-          }`}
-        >
+      <li className="w-full min-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border border-gray-600 bg-darkmode hover:border-gray-400">
+        <h2 className="text-lg font-bold tracking-wide break-words mb-1 pb-1 border-b border-gray-600">
           {note.title.length > 20
             ? `${note.title.substring(0, 20)}...`
             : `${note.title}`}

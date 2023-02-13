@@ -19,7 +19,6 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
   const navigate = useNavigate();
   const date: Date = new Date();
   const notes = useSelector((state: RootState) => state.notes.notes);
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -40,7 +39,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
   };
 
   useEffect(() => {
-    //For editing note.
+    //Condition to check if NoteForm.tsx is rendered for updating / creating note.
     if (id !== "") {
       notes.map((note) => {
         if (note.id === id) {
@@ -60,11 +59,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
         type="text"
         name="title"
         id="title"
-        className={`w-full font-semibold tracking-wide py-1.5 px-2.5 rounded-md ${
-          isDarkMode
-            ? "bg-gray-700 outline-none focus:outline-purple-500"
-            : "border border-gray-600 bg-gray-50"
-        }`}
+        className="w-full font-semibold tracking-wide py-1.5 px-2.5 rounded-md bg-gray-700 outline-none focus:outline-purple-500"
         placeholder="Title"
         value={title}
         onChange={(event) => setTitle(event.target.value)}
@@ -74,11 +69,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
       <select
         name="importance"
         id="importance"
-        className={`p-1.5 font-semibold tracking-wide w-full max-w-[160px] rounded-md ${
-          isDarkMode
-            ? "bg-gray-700 outline-none focus:outline-purple-500"
-            : "border border-gray-600 bg-gray-50"
-        }`}
+        className="p-1.5 font-semibold tracking-wide w-full max-w-[160px] rounded-md bg-gray-700 outline-none focus:outline-purple-500"
         value={priority}
         onChange={(event) => setPriority(event.target.value)}
       >
@@ -92,11 +83,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
       <textarea
         name="content"
         id="content"
-        className={`block font-semibold tracking-wide w-full py-1.5 px-2.5 resize-none rounded-md ${
-          isDarkMode
-            ? "bg-gray-700 outline-none focus:outline-purple-500"
-            : "border border-gray-600 bg-gray-50"
-        }`}
+        className="block font-semibold tracking-wide w-full py-1.5 px-2.5 resize-none rounded-md bg-gray-700 outline-none focus:outline-purple-500"
         rows={12}
         placeholder="Note (markdown supported)"
         value={note}
@@ -110,22 +97,14 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
         <section className="space-x-2.5">
           <button
             type="submit"
-            className={`border font-medium py-1 px-2.5 border-gray-600 rounded-md ${
-              isDarkMode
-                ? "bg-darkmode hover:border-gray-400"
-                : "bg-gray-50 hover:shadow-perfect"
-            }`}
+            className="border font-medium py-1 px-2.5 border-gray-600 rounded-md bg-darkmode hover:border-gray-400"
           >
             Save
           </button>
           <Link to="..">
             <button
               type="button"
-              className={`border font-medium py-1 px-2.5 border-gray-600 rounded-md ${
-                isDarkMode
-                  ? "bg-darkmode hover:border-gray-400"
-                  : "bg-gray-50 hover:shadow-perfect"
-              }`}
+              className="border font-medium py-1 px-2.5 border-gray-600 rounded-md bg-darkmode hover:border-gray-400"
             >
               Cancel
             </button>

@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useEffect, useState } from "react";
@@ -7,10 +7,12 @@ import EditIcon from "../assets/icons/EditIcon";
 import BackIcon from "../assets/icons/BackIcon";
 import DeleteIcon from "../assets/icons/DeleteIcon";
 import { useDispatch } from "react-redux";
+
 const View = () => {
   const { id } = useParams();
   const { notes } = useSelector((state: RootState) => state.notes);
-  const { isDarkMode } = useSelector((state: RootState) => state.theme);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [currentNote, setCurrentNote] = useState<note>({
     id: "",
     title: "",
@@ -19,9 +21,6 @@ const View = () => {
     date: "",
     time: "",
   });
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleDelete = (id: string) => {
     dispatch(deleteNote(id));
@@ -56,11 +55,7 @@ const View = () => {
   }, []);
 
   return (
-    <main
-      className={`p-3 pt-20 font-manrope min-h-screen w-full ${
-        isDarkMode ? "bg-darkmode text-gray-200" : "bg-gray-50"
-      }`}
-    >
+    <main className="p-3 pt-20 font-manrope min-h-screen w-full bg-darkmode text-gray-200">
       <section className="w-full max-w-[900px] mx-auto">
         <section className="flex justify-between items-start w-full">
           <h2 className="note-title text-2xl font-semibold break-words max-w-[200px] tablet:max-w-[300px] laptop:max-w-[600px]">
@@ -69,24 +64,18 @@ const View = () => {
           <section className="flex flex-row flex-wrap items-center justify-around space-x-2.5">
             <button
               onClick={handleGoBack}
-              className={`p-2 rounded-full hover:text-green-500 ${
-                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
-              }`}
+              className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
             >
               <BackIcon />
             </button>
             <button
               onClick={handleEdit}
-              className={`p-2 rounded-full hover:text-yellow-400 ${
-                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
-              }`}
+              className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
             >
               <EditIcon />
             </button>
             <button
-              className={`p-2 rounded-full hover:text-red-500 ${
-                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
-              }`}
+              className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
               onClick={() => handleDelete(currentNote.id)}
             >
               <DeleteIcon />
