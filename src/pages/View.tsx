@@ -69,7 +69,7 @@ const View = () => {
           <section className="flex flex-row flex-wrap items-center justify-around space-x-2.5">
             <button
               onClick={handleGoBack}
-              className={`p-1.5 rounded-full hover:text-green-500 ${
+              className={`p-2 rounded-full hover:text-green-500 ${
                 isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
               }`}
             >
@@ -77,14 +77,14 @@ const View = () => {
             </button>
             <button
               onClick={handleEdit}
-              className={`p-1.5 rounded-full hover:text-yellow-400 ${
+              className={`p-2 rounded-full hover:text-yellow-400 ${
                 isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
               }`}
             >
               <EditIcon />
             </button>
             <button
-              className={`p-1.5 rounded-full hover:text-red-500 ${
+              className={`p-2 rounded-full hover:text-red-500 ${
                 isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
               }`}
               onClick={() => handleDelete(currentNote.id)}

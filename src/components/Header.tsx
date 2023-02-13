@@ -31,14 +31,14 @@ const Header = () => {
     >
       <section className="flex items-center w-full max-w-[900px] relative mx-auto">
         <Link to="/">
-          <h1 className="text-xl font-medium font-manrope text-center">
-            Notewise 📝
+          <h1 className="text-2xl font-medium font-manrope text-center">
+            Noteout
           </h1>
         </Link>
         <section className="absolute right-0">
           <button
             onClick={handleTheme}
-            className={`p-1.5 rounded-full ${
+            className={`p-2 rounded-full ${
               isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
             }`}
           >
@@ -49,7 +49,7 @@ const Header = () => {
         <section className="absolute right-12">
           <button
             onClick={handleNew}
-            className={`p-1.5 rounded-full ${
+            className={`p-2 rounded-full ${
               isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
             }`}
           >

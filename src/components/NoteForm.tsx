@@ -60,7 +60,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
         type="text"
         name="title"
         id="title"
-        className={`w-full py-1.5 px-2.5 rounded-md ${
+        className={`w-full font-semibold tracking-wide py-1.5 px-2.5 rounded-md ${
           isDarkMode
             ? "bg-gray-700 outline-none focus:outline-purple-500"
             : "border border-gray-600 bg-gray-50"
@@ -74,7 +74,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
       <select
         name="importance"
         id="importance"
-        className={` p-1.5 w-full max-w-[151px] rounded-md ${
+        className={`p-1.5 font-semibold tracking-wide w-full max-w-[160px] rounded-md ${
           isDarkMode
             ? "bg-gray-700 outline-none focus:outline-purple-500"
             : "border border-gray-600 bg-gray-50"
@@ -92,7 +92,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
       <textarea
         name="content"
         id="content"
-        className={`block w-full py-1.5 px-2.5 resize-none rounded-md ${
+        className={`block font-semibold tracking-wide w-full py-1.5 px-2.5 resize-none rounded-md ${
           isDarkMode
             ? "bg-gray-700 outline-none focus:outline-purple-500"
             : "border border-gray-600 bg-gray-50"
@@ -110,7 +110,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
         <section className="space-x-2.5">
           <button
             type="submit"
-            className={`border py-1 px-2.5 border-gray-600 rounded-md ${
+            className={`border font-medium py-1 px-2.5 border-gray-600 rounded-md ${
               isDarkMode
                 ? "bg-darkmode hover:border-gray-400"
                 : "bg-gray-50 hover:shadow-perfect"
@@ -121,7 +121,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
           <Link to="..">
             <button
               type="button"
-              className={`border py-1 px-2.5 border-gray-600 rounded-md ${
+              className={`border font-medium py-1 px-2.5 border-gray-600 rounded-md ${
                 isDarkMode
                   ? "bg-darkmode hover:border-gray-400"
                   : "bg-gray-50 hover:shadow-perfect"
@@ -131,7 +131,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
             </button>
           </Link>
         </section>
-        <section className="space-x-2.5 break-words text-gray-500">
+        <section className="space-x-2.5 font-medium break-words text-gray-500">
           <p>Chars: {noteLength}</p>
         </section>
       </section>
