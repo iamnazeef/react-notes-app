@@ -17,13 +17,15 @@ const Edit = () => {
 
   return (
     <main
-      className={`p-3 pt-20 font-manrope w-full min-h-screen ${
-        isDarkMode ? "bg-darkmode text-gray-200" : "bg-gray-50"
+      className={`px-3 pt-20 min-h-screen font-manrope w-full ${
+        isDarkMode ? "bg-darkmode text-gray-200" : "bg-gray-50 text-gray-900"
       }`}
     >
-      <section className="w-full max-w-[580px] mx-auto">
+      <section className="w-full max-w-[600px] mx-auto">
         <h2 className="text-xl font-medium">Edit note</h2>
-        <NoteForm onSubmit={onSubmit} id={id} />
+        <section className="noteform">
+          <NoteForm onSubmit={onSubmit} id={id} />
+        </section>
       </section>
     </main>
   );

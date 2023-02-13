@@ -28,6 +28,14 @@ const View = () => {
     navigate("/");
   };
 
+  const handleGoBack = () => {
+    navigate("..");
+  };
+
+  const handleEdit = () => {
+    navigate("edit");
+  };
+
   const getNote = () => {
     notes.map((note) => {
       if (id === note.id) {
@@ -59,26 +67,24 @@ const View = () => {
             {currentNote.title}
           </h2>
           <section className="flex flex-row flex-wrap items-center justify-around space-x-2.5">
-            <Link to="..">
-              <button
-                className={`p-1.5 rounded-full ${
-                  isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
-                }`}
-              >
-                <BackIcon />
-              </button>
-            </Link>
-            <Link to="edit">
-              <button
-                className={`p-1.5 rounded-full ${
-                  isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
-                }`}
-              >
-                <EditIcon />
-              </button>
-            </Link>
             <button
-              className={`p-1.5 rounded-full ${
+              onClick={handleGoBack}
+              className={`p-1.5 rounded-full hover:text-green-500 ${
+                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+              }`}
+            >
+              <BackIcon />
+            </button>
+            <button
+              onClick={handleEdit}
+              className={`p-1.5 rounded-full hover:text-yellow-400 ${
+                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+              }`}
+            >
+              <EditIcon />
+            </button>
+            <button
+              className={`p-1.5 rounded-full hover:text-red-500 ${
                 isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
               }`}
               onClick={() => handleDelete(currentNote.id)}
@@ -91,7 +97,7 @@ const View = () => {
           <section className="note-creation-date text-sm mt-1.5 font-medium text-gray-500">
             Created on: {currentNote.date}
           </section>
-          <section className="note-content mt-2 text-base leading-8 tracking-wide">
+          <section className="note-content mt-2 break-words text-base leading-8 tracking-wide">
             {currentNote.note}
           </section>
         </section>

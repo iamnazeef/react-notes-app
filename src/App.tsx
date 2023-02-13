@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
-const LazyNewNote = lazy(() => import("./pages/New"));
-const LazyView = lazy(() => import("./pages/View"));
-const LazyEdit = lazy(() => import("./pages/Edit"));
+import New from "./pages/New";
+import View from "./pages/View";
+import Edit from "./pages/Edit";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 
@@ -12,34 +11,10 @@ const App: React.FC = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="/new"
-          element={
-            //TODO: Add Skeleton
-            <Suspense fallback={<h1>Loading...</h1>}>
-              <LazyNewNote />
-            </Suspense>
-          }
-        />
+        <Route path="/new" element={<New />} />
         <Route path="/:id">
-          <Route
-            index
-            element={
-              //TODO: Add Skeleton
-              <Suspense fallback={<h1>Loading...</h1>}>
-                <LazyView />
-              </Suspense>
-            }
-          />
-          <Route
-            path="edit"
-            element={
-              //TODO: Add Skeleton
-              <Suspense fallback={<h1>Loading...</h1>}>
-                <LazyEdit />
-              </Suspense>
-            }
-          />
+          <Route index element={<View />} />
+          <Route path="edit" element={<Edit />} />
         </Route>
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>

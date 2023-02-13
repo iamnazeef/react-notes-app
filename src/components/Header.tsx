@@ -4,15 +4,21 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useDispatch } from "react-redux";
 import { toggle } from "../features/themeSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import AddIcon from "../assets/icons/AddIcon";
 
 const Header = () => {
   const { isDarkMode } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log(isDarkMode);
 
   const handleTheme = () => {
     dispatch(toggle());
+  };
+
+  const handleNew = () => {
+    navigate("/new");
   };
 
   return (
@@ -23,13 +29,13 @@ const Header = () => {
           : "bg-gray-50 text-gray-900 border-gray-600"
       }`}
     >
-      <section className="flex items-center justify-center w-full max-w-[600px] relative mx-auto">
+      <section className="flex items-center w-full max-w-[900px] relative mx-auto">
         <Link to="/">
           <h1 className="text-xl font-medium font-manrope text-center">
-            Notes
+            Notewise 📝
           </h1>
         </Link>
-        <section className="absolute right-4">
+        <section className="absolute right-0">
           <button
             onClick={handleTheme}
             className={`p-1.5 rounded-full ${
@@ -38,6 +44,16 @@ const Header = () => {
           >
             {isDarkMode && <LightMode />}
             {!isDarkMode && <DarkMode />}
+          </button>
+        </section>
+        <section className="absolute right-12">
+          <button
+            onClick={handleNew}
+            className={`p-1.5 rounded-full ${
+              isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+            }`}
+          >
+            <AddIcon />
           </button>
         </section>
       </section>

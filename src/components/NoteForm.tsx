@@ -55,12 +55,12 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-5 space-y-5">
+    <form onSubmit={handleSubmit} className="py-5 space-y-5">
       <input
         type="text"
         name="title"
         id="title"
-        className={`w-full p-1.5 rounded-md ${
+        className={`w-full py-1.5 px-2.5 rounded-md ${
           isDarkMode
             ? "bg-gray-700 outline-none focus:outline-purple-500"
             : "border border-gray-600 bg-gray-50"
@@ -92,12 +92,12 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
       <textarea
         name="content"
         id="content"
-        className={`block w-full p-1.5 rounded-md ${
+        className={`block w-full py-1.5 px-2.5 resize-none rounded-md ${
           isDarkMode
             ? "bg-gray-700 outline-none focus:outline-purple-500"
             : "border border-gray-600 bg-gray-50"
         }`}
-        rows={10}
+        rows={12}
         placeholder="Note (markdown supported)"
         value={note}
         onChange={(event) => {
@@ -106,32 +106,34 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
         }}
         required
       />
-      <section className="space-x-2.5 float-right">
-        <button
-          type="submit"
-          className={`border py-1 px-2.5 border-gray-600 rounded-md ${
-            isDarkMode
-              ? "bg-darkmode hover:border-gray-400"
-              : "bg-gray-50 hover:shadow-perfect"
-          }`}
-        >
-          Save
-        </button>
-        <Link to="..">
+      <section className="flex flex-row-reverse items-center justify-between">
+        <section className="space-x-2.5">
           <button
-            type="button"
+            type="submit"
             className={`border py-1 px-2.5 border-gray-600 rounded-md ${
               isDarkMode
                 ? "bg-darkmode hover:border-gray-400"
                 : "bg-gray-50 hover:shadow-perfect"
             }`}
           >
-            Cancel
+            Save
           </button>
-        </Link>
-      </section>
-      <section className="space-x-2.5 float-left">
-        <p className="text-gray-500">Note length: {noteLength}</p>
+          <Link to="..">
+            <button
+              type="button"
+              className={`border py-1 px-2.5 border-gray-600 rounded-md ${
+                isDarkMode
+                  ? "bg-darkmode hover:border-gray-400"
+                  : "bg-gray-50 hover:shadow-perfect"
+              }`}
+            >
+              Cancel
+            </button>
+          </Link>
+        </section>
+        <section className="space-x-2.5 break-words text-gray-500">
+          <p>Chars: {noteLength}</p>
+        </section>
       </section>
     </form>
   );

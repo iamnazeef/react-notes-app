@@ -32,13 +32,13 @@ const NewNote = () => {
 
   return (
     <main
-      className={`p-3 pt-20 font-manrope min-h-screen ${
+      className={`px-3 pt-20 min-h-screen font-manrope w-full ${
         isDarkMode ? "bg-darkmode text-gray-200" : "bg-gray-50 text-gray-900"
       }`}
     >
       <section className="w-full max-w-[600px] mx-auto">
         <h2 className="text-xl font-medium">Create new note</h2>
-        <section>
+        <section className="noteform">
           <NoteForm onSubmit={onSubmit} id={""} />
         </section>
       </section>
