@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import notesReducer from "../features/notesSlice";
-import themeReducer from "../features/themeSlice";
+import userReducer from "../features/userSlice";
 
 export const store = configureStore({
   reducer: {
     notes: notesReducer,
-    theme: themeReducer,
+    user: userReducer,
   },
 });
 

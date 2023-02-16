@@ -1,56 +1,77 @@
-import { Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
-const LazyNew = lazy(() => import("./pages/New"));
-const LazyView = lazy(() => import("./pages/View"));
-const LazyEdit = lazy(() => import("./pages/Edit"));
-const LazyPageNotFound = lazy(() => import("./pages/PageNotFound"));
-import Header from "./components/Header";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
+import Header from "./components/Header";
+import New from "./pages/New";
+import View from "./pages/View";
+import Edit from "./pages/Edit";
+import PageNotFound from "./pages/PageNotFound";
+import Auth from "./pages/Auth";
+import { useEffect } from "react";
+import { auth } from "./firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { loggedIn, loggedOut } from "./features/userSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(loggedIn());
+      } else {
+        dispatch(loggedOut());
+      }
+    });
+  }, [auth.currentUser]);
+
   return (
     <div className="bg-darkmode min-w-screen min-h-screen">
-      <Header />
+      {isLoggedIn && <Header />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/new"
           element={
-            //TODO: Add Skeleton
-            <Suspense fallback={<h1>Loading...</h1>}>
-              <LazyNew />
-            </Suspense>
+            <ProtectedRoute>
+              <New />
+            </ProtectedRoute>
           }
+        />
+        <Route
+          path="/auth"
+          element={isLoggedIn ? <Navigate to="/" /> : <Auth />}
         />
         <Route path="/:id">
           <Route
             index
             element={
-              //TODO: Add Skeleton
-              <Suspense fallback={<h1>Loading...</h1>}>
-                <LazyView />
-              </Suspense>
+              <ProtectedRoute>
+                <View />
+              </ProtectedRoute>
             }
           />
           <Route
             path="edit"
             element={
-              //TODO: Add Skeleton
-              <Suspense fallback={<h1>Loading...</h1>}>
-                <LazyEdit />
-              </Suspense>
+              <ProtectedRoute>
+                <Edit />
+              </ProtectedRoute>
             }
           />
         </Route>
-        <Route
-          path="*"
-          element={
-            //TODO: Add Skeleton
-            <Suspense fallback={<h1>Loading...</h1>}>
-              <LazyPageNotFound />
-            </Suspense>
-          }
-        />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );

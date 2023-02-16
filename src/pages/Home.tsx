@@ -26,9 +26,9 @@ const Home = () => {
       </section>
 
       {notes.length < 1 && (
-        <section className="flex justify-center items-center min-h-[80vh]">
-          <p className="text-3xl tablet:text-4xl laptop:text-5xl font-medium text-gray-600 font-mono">
-            Create Notes
+        <section className="flex justify-center items-center min-h-[65vh]">
+          <p className="text-3xl tablet:text-4xl font-medium text-gray-600 font-sans">
+            Create notes
           </p>
         </section>
       )}

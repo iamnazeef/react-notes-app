@@ -11,10 +11,9 @@ export interface NewNoteType {
   time: string;
 }
 
-const NewNote = () => {
+const New = () => {
   const dispatch = useDispatch();
   const onSubmit = (data: NewNoteType): void => {
-    console.log(data);
     dispatch(
       save({
         id: data.id,
@@ -39,4 +38,4 @@ const NewNote = () => {
   );
 };
 
-export default NewNote;
+export default New;
