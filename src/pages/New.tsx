@@ -1,29 +1,26 @@
 import NoteForm from "../components/NoteForm";
 import { useDispatch } from "react-redux";
-import { save } from "../features/notesSlice";
-
-export interface NewNoteType {
-  id: string;
-  title: string;
-  priority: string;
-  note: string;
-  date: string;
-  time: string;
-}
+import { note, save } from "../features/notesSlice";
+import { db } from "../firebase/config";
+import { collection, addDoc } from "firebase/firestore";
 
 const New = () => {
   const dispatch = useDispatch();
-  const onSubmit = (data: NewNoteType): void => {
-    dispatch(
-      save({
-        id: data.id,
-        title: data.title,
-        priority: data.priority,
-        note: data.note,
-        date: data.date,
-        time: data.time,
-      })
-    );
+
+  const addToFirestore = async (note: note) => {
+    try {
+      await addDoc(collection(db, "notes"), note);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  };
+
+  const onSubmit = (note: note): void => {
+    //Redux state management
+    dispatch(save(note));
+
+    //Firestore
+    addToFirestore(note);
   };
 
   return (

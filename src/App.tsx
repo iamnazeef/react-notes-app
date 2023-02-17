@@ -7,27 +7,53 @@ import Edit from "./pages/Edit";
 import PageNotFound from "./pages/PageNotFound";
 import Auth from "./pages/Auth";
 import { useEffect } from "react";
-import { auth } from "./firebase/config";
+import { auth, db } from "./firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { loggedIn, loggedOut } from "./features/userSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { note, reset, save } from "./features/notesSlice";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
+  const getNotes = async () => {
+    try {
+      const notesRef = collection(db, "notes");
+      const q = query(
+        notesRef,
+        where("user_id", "==", auth.currentUser!.uid.toString()),
+        orderBy("timestamp")
+      );
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach((doc) => {
+        const note = doc.data();
+        dispatch(save(note as note));
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+  // console.log("render");
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(loggedIn());
+        getNotes();
       } else {
         dispatch(loggedOut());
+        dispatch(reset());
       }
     });
-  }, [auth.currentUser]);
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="bg-darkmode min-w-screen min-h-screen">

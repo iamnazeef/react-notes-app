@@ -9,8 +9,8 @@ const Home = () => {
   const navigate = useNavigate();
 
   const savedNotes = notes.map((note) => {
-    const link = `/${note.id}`;
-    return <NoteCard link={link} note={note} key={note.id} />;
+    const link = `/${note.note_id}`;
+    return <NoteCard link={link} note={note} key={note.note_id} />;
   });
 
   const handleNew = () => {

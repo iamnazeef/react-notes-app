@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { RootState } from "../store/store";
 
 export interface note {
-  id: string;
+  content: string;
+  created_date: string;
+  note_id: string;
+  priority: number;
+  timestamp: number;
   title: string;
-  priority: string;
-  note: string;
-  date: string;
-  time: string;
+  user_id: string;
 }
 
 interface State {
@@ -23,23 +23,28 @@ const notesSlice = createSlice({
   initialState,
   reducers: {
     save: (state, action: PayloadAction<note>) => {
-      state.notes.push(action.payload);
+      state.notes.unshift(action.payload);
     },
     delete: (state, action: PayloadAction<string>) => {
-      state.notes = state.notes.filter((note) => note.id !== action.payload);
+      state.notes = state.notes.filter(
+        (note) => note.note_id !== action.payload
+      );
     },
     update: (state, action: PayloadAction<note>) => {
       state.notes.map((note) => {
-        if (note.id === action.payload.id) {
+        if (note.note_id === action.payload.note_id) {
           note.title = action.payload.title;
-          note.note = action.payload.note;
+          note.content = action.payload.content;
           note.priority = action.payload.priority;
         }
       });
     },
+    reset: (state, action: PayloadAction<undefined>) => {
+      state.notes = [];
+    },
   },
 });
 
-export const { delete: deleteNote, save, update } = notesSlice.actions;
+export const { delete: deleteNote, save, update, reset } = notesSlice.actions;
 export default notesSlice.reducer;
 // export const selectNotes = (state: RootState) => state.notes.notes;

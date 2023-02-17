@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { NewNoteType } from "../pages/New";
 import { v4 as uuid } from "uuid";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { auth } from "../firebase/config";
+import { note } from "../features/notesSlice";
 
-interface NoteFormProps {
-  onSubmit: (data: NewNoteType) => void;
+interface Props {
+  onSubmit: (data: note) => void;
   id: string;
 }
 
-const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
+const NoteForm = ({ onSubmit, id }: Props) => {
   const [noteLength, setNoteLength] = useState<number>(0);
-  const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState("0");
-  const [note, setNote] = useState("");
-  const [editNoteId, setEditNoteId] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [priority, setPriority] = useState<number>(0);
+  const [note, setNote] = useState<string>("");
+  const [editNoteId, setEditNoteId] = useState<string>("");
   const navigate = useNavigate();
   const date: Date = new Date();
   const notes = useSelector((state: RootState) => state.notes.notes);
@@ -25,14 +26,15 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
 
     //Saving note
     onSubmit({
-      id: id ? editNoteId : "" + uuid(),
-      title: title,
+      content: note,
+      created_date: `${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()}`,
+      note_id: id ? editNoteId : "" + uuid(),
       priority: priority,
-      note: note,
-      date: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`,
-      time: `${Math.ceil(date.getHours() / 12)}:${Math.ceil(
-        date.getMinutes()
-      )} ${Math.ceil(date.getHours()) < 12 ? "AM" : "PM"}`,
+      timestamp: Date.now(),
+      title: title,
+      user_id: auth.currentUser!.uid,
     });
 
     navigate("..");
@@ -42,12 +44,12 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
     //Condition to check if NoteForm.tsx is rendered for updating / creating note.
     if (id !== "") {
       notes.map((note) => {
-        if (note.id === id) {
+        if (note.note_id === id) {
           setTitle(note.title);
           setPriority(note.priority);
-          setNote(note.note);
-          setNoteLength(note.note.length);
-          setEditNoteId(note.id);
+          setNote(note.content);
+          setNoteLength(note.content.length);
+          setEditNoteId(note.note_id);
         }
       });
     }
@@ -71,7 +73,7 @@ const NoteForm = ({ onSubmit, id }: NoteFormProps) => {
         id="importance"
         className="p-1.5 font-semibold tracking-wide w-full max-w-[160px] rounded-md bg-gray-700 outline-none focus:outline-purple-500"
         value={priority}
-        onChange={(event) => setPriority(event.target.value)}
+        onChange={(event) => setPriority(Number(event.target.value))}
       >
         <option value="0" disabled>
           Set priority
