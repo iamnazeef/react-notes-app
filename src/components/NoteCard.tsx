@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { note } from "../features/notesSlice";
 import Tooltip from "@mui/material/Tooltip";
+import { useEffect, useState } from "react";
 
 interface Props {
   link: string;
@@ -8,19 +9,17 @@ interface Props {
 }
 
 const NoteCard = ({ link, note }: Props) => {
-  let color = "";
+  const [color, setColor] = useState<string>("");
 
-  switch (note.priority) {
-    case 1:
-      color = "red";
-      break;
-    case 2:
-      color = "yellow";
-      break;
-    case 3:
-      color = "green";
-      break;
-  }
+  useEffect(() => {
+    if (note.priority === 1) {
+      setColor("bg-red-500 border-red-500");
+    } else if (note.priority === 2) {
+      setColor("bg-yellow-500 border-yellow-500");
+    } else {
+      setColor("bg-green-500 border-green-500");
+    }
+  }, []);
 
   return (
     <Link to={link} key={note.note_id}>
@@ -41,7 +40,7 @@ const NoteCard = ({ link, note }: Props) => {
             }`}
           >
             <div
-              className={`border bg-${color}-500 min-h-[0.400rem] max-h-[0.400rem] min-w-[0.400rem] max-w-[0.400rem] rounded-full border-${color}-500`}
+              className={`border ${color} min-h-[0.400rem] max-h-[0.400rem] min-w-[0.400rem] max-w-[0.400rem] rounded-full`}
               aria-label={`${
                 note.priority === 1
                   ? "High priority"

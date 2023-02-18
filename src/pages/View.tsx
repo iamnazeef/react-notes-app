@@ -22,6 +22,7 @@ const View = () => {
   const { id } = useParams();
   const { notes } = useSelector((state: RootState) => state.notes);
   const [docId, setDocId] = useState<string>("");
+  const [color, setColor] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentNote, setCurrentNote] = useState<note>({
@@ -80,9 +81,14 @@ const View = () => {
   useEffect(() => {
     getNote();
     getDocId();
+    if (currentNote.priority === 1) {
+      setColor("bg-red-500 border-red-500");
+    } else if (currentNote.priority === 2) {
+      setColor("bg-yellow-500 border-yellow-500");
+    } else {
+      setColor("bg-green-500 border-green-500");
+    }
   }, [notes]);
-
-  let color = "red";
 
   return (
     <main className="p-3 pt-4 font-manrope w-full bg-darkmode text-gray-200">
@@ -133,7 +139,7 @@ const View = () => {
               }`}
             >
               <div
-                className={`border bg-${color}-500 min-h-[0.450rem] max-h-[0.450rem] min-w-[0.450rem] max-w-[0.450rem] rounded-full border-${color}-500 mt-1`}
+                className={`border ${color} min-h-[0.450rem] max-h-[0.450rem] min-w-[0.450rem] max-w-[0.450rem] rounded-full ${color} mt-1`}
                 aria-label={`${
                   currentNote.priority === 1
                     ? "High priority"

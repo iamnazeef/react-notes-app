@@ -39,7 +39,7 @@ const Header = () => {
             Notes App
           </h1>
         </Link>
-        <section className="hidden tablet:block absolute right-[4rem]">
+        <section className="hidden tablet:block absolute right-[4rem] rounded-full">
           <button
             onClick={handleNew}
             className="py-[0.300rem] px-4 border border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
@@ -47,7 +47,7 @@ const Header = () => {
             Create note
           </button>
         </section>
-        <section className="absolute right-0">
+        <section className="absolute right-0 rounded-full">
           <Tooltip title="Account">
             <button
               className="border p-1.5 border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"

@@ -41,7 +41,7 @@ const Home = ({ isLoading }: Props) => {
         </section>
       )}
 
-      <section className="create-note fixed right-12 bg-darkmode bottom-24 tablet:hidden">
+      <section className="create-note fixed right-12 bg-darkmode bottom-24 tablet:hidden rounded-full">
         <button
           onClick={handleNew}
           className="border border-gray-600 p-3 shadow-3xl rounded-full hover:border-gray-400"
