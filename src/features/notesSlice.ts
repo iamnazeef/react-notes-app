@@ -47,4 +47,3 @@ const notesSlice = createSlice({
 
 export const { delete: deleteNote, save, update, reset } = notesSlice.actions;
 export default notesSlice.reducer;
-// export const selectNotes = (state: RootState) => state.notes.notes;

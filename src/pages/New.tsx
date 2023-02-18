@@ -24,7 +24,7 @@ const New = () => {
   };
 
   return (
-    <main className="px-3 pt-20 min-h-screen font-manrope w-full bg-darkmode text-gray-200">
+    <main className="px-3 pt-4 font-manrope w-full bg-darkmode text-gray-200">
       <section className="w-full max-w-[600px] mx-auto">
         <h2 className="text-xl font-medium">Create new note</h2>
         <section className="noteform">

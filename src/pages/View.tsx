@@ -16,6 +16,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
+import Tooltip from "@mui/material/Tooltip";
 
 const View = () => {
   const { id } = useParams();
@@ -79,39 +80,69 @@ const View = () => {
   useEffect(() => {
     getNote();
     getDocId();
-  }, []);
+  }, [notes]);
+
+  let color = "red";
 
   return (
-    <main className="p-3 pt-20 font-manrope min-h-screen w-full bg-darkmode text-gray-200">
+    <main className="p-3 pt-4 font-manrope w-full bg-darkmode text-gray-200">
       <section className="w-full max-w-[900px] mx-auto">
         <section className="flex justify-between items-start w-full">
           <h2 className="note-title self-center text-2xl font-semibold break-words max-w-[200px] tablet:max-w-[300px] laptop:max-w-[600px]">
             {currentNote.title}
           </h2>
-          <section className="flex flex-col space-y-1.5 tablet:flex-row tablet:space-x-1.5 items-center justify-center">
-            <button
-              className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
-              onClick={() => handleDelete(currentNote.note_id)}
-            >
-              <DeleteIcon />
-            </button>
-            <button
-              onClick={handleEdit}
-              className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
-            >
-              <EditIcon />
-            </button>
-            <button
-              onClick={handleGoBack}
-              className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
-            >
-              <BackIcon />
-            </button>
+          <section className="flex space-x-1.5 items-center justify-center">
+            <Tooltip title="Delete">
+              <button
+                className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
+                onClick={() => handleDelete(currentNote.note_id)}
+              >
+                <DeleteIcon />
+              </button>
+            </Tooltip>
+            <Tooltip title="Edit">
+              <button
+                onClick={handleEdit}
+                className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
+              >
+                <EditIcon />
+              </button>
+            </Tooltip>
+            <Tooltip title="Back">
+              <button
+                onClick={handleGoBack}
+                className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
+              >
+                <BackIcon />
+              </button>
+            </Tooltip>
           </section>
         </section>
         <section className="mt-5">
-          <section className="note-creation-date text-sm mt-1.5 font-medium text-gray-500">
-            Created on: {currentNote.created_date}
+          <section className="flex justify-start items-center space-x-2.5">
+            <section className="note-creation-date text-sm mt-[0.390rem] font-medium text-gray-500">
+              Created on: {currentNote.created_date}
+            </section>
+            <Tooltip
+              title={`${
+                currentNote.priority === 1
+                  ? "High priority"
+                  : currentNote.priority === 2
+                  ? "Medium priority"
+                  : "Low priority"
+              }`}
+            >
+              <div
+                className={`border bg-${color}-500 min-h-[0.450rem] max-h-[0.450rem] min-w-[0.450rem] max-w-[0.450rem] rounded-full border-${color}-500 mt-1`}
+                aria-label={`${
+                  currentNote.priority === 1
+                    ? "High priority"
+                    : currentNote.priority === 2
+                    ? "Medium priority"
+                    : "Low priority"
+                }`}
+              ></div>
+            </Tooltip>
           </section>
           <section className="note-content mt-2 break-words text-base leading-8 tracking-wide">
             {currentNote.content}
