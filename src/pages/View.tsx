@@ -81,13 +81,6 @@ const View = () => {
   useEffect(() => {
     getNote();
     getDocId();
-    if (currentNote.priority === 1) {
-      setColor("bg-red-500 border-red-500");
-    } else if (currentNote.priority === 2) {
-      setColor("bg-yellow-500 border-yellow-500");
-    } else {
-      setColor("bg-green-500 border-green-500");
-    }
   }, [notes]);
 
   return (
@@ -139,7 +132,13 @@ const View = () => {
               }`}
             >
               <div
-                className={`border ${color} min-h-[0.450rem] max-h-[0.450rem] min-w-[0.450rem] max-w-[0.450rem] rounded-full ${color} mt-1`}
+                className={`border min-h-[0.450rem] max-h-[0.450rem] min-w-[0.450rem] max-w-[0.450rem] rounded-full mt-1 ${
+                  currentNote.priority === 1
+                    ? "bg-red-500 border-red-500"
+                    : currentNote.priority === 2
+                    ? "bg-yellow-500 border-yellow-500"
+                    : "bg-green-500 border-green-500"
+                }`}
                 aria-label={`${
                   currentNote.priority === 1
                     ? "High priority"
