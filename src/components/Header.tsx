@@ -9,6 +9,9 @@ import Tooltip from "@mui/material/Tooltip";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { currentUser } = auth;
+
+  console.log(currentUser);
 
   const handleNew = () => {
     navigate("/new");
@@ -48,12 +51,22 @@ const Header = () => {
           </button>
         </section>
         <section className="absolute right-0 rounded-full">
-          <Tooltip title="Account">
+          <Tooltip
+            title={`${currentUser?.email ? currentUser.email : "Account"}`}
+          >
             <button
               className="border p-1.5 border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
               onClick={handleClick}
             >
-              <UserIcon />
+              {currentUser?.photoURL ? (
+                <img
+                  src={currentUser.photoURL}
+                  alt={currentUser.displayName || "User account"}
+                  className="w-[26px] h-[26px] rounded-full"
+                />
+              ) : (
+                <UserIcon />
+              )}
             </button>
           </Tooltip>
         </section>
@@ -96,14 +109,42 @@ const Header = () => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem
+          <section>
+            <p className="p-1 text-sm break-words font-manrope font-bold leading-5 tracking-wide">
+              {currentUser?.displayName
+                ? currentUser?.displayName
+                : "User account"}{" "}
+              <br /> <span className="text-xs">{currentUser?.email}</span>
+            </p>
+          </section>
+          <section className="border-t border-gray-400 font-manrope font-medium w-full py-1 hover:bg-gray-300">
+            <button
+              className="w-full mx-auto"
+              onClick={() => {
+                handleClose();
+                handleSignOut();
+              }}
+            >
+              Sign out
+            </button>
+          </section>
+        </Menu>
+      </section>
+    </header>
+  );
+};
+
+export default Header;
+
+{
+  /* <MenuItem
             onClick={() => {
               handleClose();
               handleSignOut();
             }}
             sx={{
-              minWidth: "100px",
-              maxWidth: "100px",
+              minWidth: "100%",
+              maxWidth: "100%",
               minHeight: "25px",
               maxHeight: "25px",
               minPaddingY: "10px",
@@ -117,11 +158,5 @@ const Header = () => {
             }}
           >
             Sign out
-          </MenuItem>
-        </Menu>
-      </section>
-    </header>
-  );
-};
-
-export default Header;
+          </MenuItem> */
+}

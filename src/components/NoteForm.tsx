@@ -14,7 +14,7 @@ interface Props {
 const NoteForm = ({ onSubmit, id }: Props) => {
   const [noteLength, setNoteLength] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
-  const [priority, setPriority] = useState<number>(0);
+  const [priority, setPriority] = useState<number>(1);
   const [note, setNote] = useState<string>("");
   const [editNoteId, setEditNoteId] = useState<string>("");
   const navigate = useNavigate();
@@ -56,12 +56,12 @@ const NoteForm = ({ onSubmit, id }: Props) => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="py-5 space-y-5">
+    <form onSubmit={handleSubmit} className="pb-5 pt-6 space-y-5">
       <input
         type="text"
         name="title"
         id="title"
-        className="w-full font-semibold tracking-wide py-1.5 px-2.5 rounded-md bg-gray-700 outline-none focus:outline-purple-500"
+        className="w-full tracking-wide py-1.5 px-2.5 bg-darkmode border-b border-gray-700 outline-none placeholder:text-xl"
         placeholder="Title"
         value={title}
         onChange={(event) => setTitle(event.target.value)}
@@ -71,13 +71,10 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       <select
         name="importance"
         id="importance"
-        className="p-1.5 font-semibold tracking-wide w-full max-w-[160px] rounded-md bg-gray-700 outline-none focus:outline-purple-500"
+        className="p-1.5 text-lg text-gray-400 tracking-wide w-full max-w-[200px] bg-darkmode outline-none border-b border-gray-700"
         value={priority}
         onChange={(event) => setPriority(Number(event.target.value))}
       >
-        <option value="0" disabled>
-          Set priority
-        </option>
         <option value="1">High priority</option>
         <option value="2">Medium priority</option>
         <option value="3">Low priority</option>
@@ -85,7 +82,7 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       <textarea
         name="content"
         id="content"
-        className="block font-semibold tracking-wide w-full py-1.5 px-2.5 resize-none rounded-md bg-gray-700 outline-none focus:outline-purple-500"
+        className="block font-normal tracking-wider w-full py-1.5 px-2.5 resize-none bg-darkmode border-b border-gray-700 outline-none placeholder:text-base"
         rows={12}
         placeholder="Note (markdown supported)"
         value={note}
@@ -99,14 +96,14 @@ const NoteForm = ({ onSubmit, id }: Props) => {
         <section className="space-x-2.5">
           <button
             type="submit"
-            className="border font-medium py-1 px-2.5 border-gray-600 rounded-md bg-darkmode hover:border-gray-400"
+            className="border font-medium py-1 px-2.5 border-gray-600 rounded-[0.225rem] bg-darkmode hover:border-gray-400"
           >
             Save
           </button>
           <Link to="..">
             <button
               type="button"
-              className="border font-medium py-1 px-2.5 border-gray-600 rounded-md bg-darkmode hover:border-gray-400"
+              className="border font-medium py-1 px-2.5 border-gray-600 rounded-[0.225rem] bg-darkmode hover:border-gray-400"
             >
               Cancel
             </button>

@@ -52,12 +52,12 @@ const NoteCard = ({ link, note }: Props) => {
           </Tooltip>
         </section>
         <hr className="border-gray-600 my-1" />
-        <section className="content break-words tracking-wide font-semibold p-1 text-sm">
-          <p>
+        <section className="content">
+          <pre className="font-manrope text-sm tracking-wide font-medium leading-6 whitespace-pre-wrap">
             {note.content.length > 200
               ? `${note.content.substring(0, 200)}...`
               : `${note.content}`}
-          </p>
+          </pre>
         </section>
       </li>
     </Link>

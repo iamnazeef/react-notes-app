@@ -149,8 +149,10 @@ const View = () => {
               ></div>
             </Tooltip>
           </section>
-          <section className="note-content mt-2 break-words text-base leading-8 tracking-wide">
-            {currentNote.content}
+          <section className="note-content mt-2">
+            <pre className="font-manrope whitespace-pre-wrap text-base leading-8 tracking-wide">
+              {currentNote.content}
+            </pre>
           </section>
         </section>
       </section>
