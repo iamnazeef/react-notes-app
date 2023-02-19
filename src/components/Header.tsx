@@ -11,8 +11,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { currentUser } = auth;
 
-  console.log(currentUser);
-
   const handleNew = () => {
     navigate("/new");
   };
