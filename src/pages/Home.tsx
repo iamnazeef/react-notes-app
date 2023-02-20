@@ -4,6 +4,7 @@ import AddIcon from "../assets/icons/AddIcon";
 import NoteCard from "../components/NoteCard";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import Filter from "../components/Filter";
 
 interface Props {
   isLoading: boolean;
@@ -12,9 +13,18 @@ interface Props {
 const Home = ({ isLoading }: Props) => {
   const { notes } = useSelector((state: RootState) => state.notes);
   const navigate = useNavigate();
+  const { filterBy } = useSelector((state: RootState) => state.filter);
 
-  const savedNotes = notes.map((note) => {
-    const link = `/${note.note_id}`;
+  const filteredNotes = notes.filter((note) => {
+    if (filterBy !== 0 && filterBy === note.priority) {
+      return note;
+    } else if (filterBy === 0) {
+      return note;
+    }
+  });
+
+  const savedNotes = filteredNotes.map((note) => {
+    const link = `/${note!.note_id}`;
     return <NoteCard link={link} note={note} key={note.note_id} />;
   });
 
@@ -24,11 +34,14 @@ const Home = ({ isLoading }: Props) => {
 
   return (
     <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
-      <section className="w-full max-w-[900px] mx-auto pt-4">
-        <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5">
-          {savedNotes}
-        </ul>
-      </section>
+      {notes.length > 0 && (
+        <section className="w-full max-w-[900px] mx-auto pt-4">
+          <Filter />
+          <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5">
+            {savedNotes}
+          </ul>
+        </section>
+      )}
 
       {notes.length < 1 && (
         <section className="flex justify-center items-center min-h-[65vh]">

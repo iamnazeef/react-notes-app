@@ -84,7 +84,7 @@ const NoteForm = ({ onSubmit, id }: Props) => {
         id="content"
         className="block font-normal tracking-wider w-full py-1.5 px-2.5 resize-none bg-darkmode border-b border-gray-700 outline-none placeholder:text-base"
         rows={12}
-        placeholder="Note (markdown supported)"
+        placeholder="Write..."
         value={note}
         onChange={(event) => {
           setNoteLength(event.target.value.length);
