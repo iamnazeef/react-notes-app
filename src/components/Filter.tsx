@@ -28,7 +28,7 @@ const Filter = () => {
   return (
     <>
       <h2 className="mb-1 font-medium">Filter:</h2>
-      <section className="categories grid grid-cols-4 mb-6 w-full max-w-[330px] laptop:max-w-[285px] h-[25px]">
+      <section className="categories grid grid-cols-4 mb-6 w-full max-w-[330px] laptop:max-w-[285px] h-[25px] sticky top-[4rem] laptop:top-[4.5rem] bg-darkmode shadow-xl">
         <Tooltip title="Show all">
           <section
             className={`all text-center border border-gray-600 rounded-l-sm ${
