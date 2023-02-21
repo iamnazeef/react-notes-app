@@ -83,7 +83,8 @@ const Header = () => {
               filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
               mr: 1.5,
-              bgcolor: "whitesmoke",
+              color: "whitesmoke",
+              bgcolor: "#333333",
               "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
@@ -98,7 +99,7 @@ const Header = () => {
                 right: 14,
                 width: 10,
                 height: 10,
-                bgcolor: "background.paper",
+                bgcolor: "#333333",
                 transform: "translateY(-50%) rotate(45deg)",
                 zIndex: 0,
               },
@@ -108,14 +109,14 @@ const Header = () => {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <section>
-            <p className="p-1 text-sm break-words font-manrope font-bold leading-5 tracking-wide">
+            <p className="p-1 text-sm break-words font-manrope font-normal leading-5 tracking-wide">
               {currentUser?.displayName
                 ? currentUser?.displayName
                 : "User account"}{" "}
               <br /> <span className="text-xs">{currentUser?.email}</span>
             </p>
           </section>
-          <section className="border-t border-gray-400 font-manrope font-medium w-full py-1 hover:bg-gray-300">
+          <section className="border-t border-gray-400 font-manrope font-medium w-full py-1 hover:bg-[#444547]">
             <button
               className="w-full mx-auto"
               onClick={() => {

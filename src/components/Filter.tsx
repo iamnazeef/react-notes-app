@@ -26,9 +26,11 @@ const Filter = () => {
   };
 
   return (
-    <>
-      <h2 className="mb-1 font-medium">Filter:</h2>
-      <section className="categories grid grid-cols-4 mb-6 w-full max-w-[330px] laptop:max-w-[285px] h-[25px] sticky top-[4rem] laptop:top-[4.5rem] bg-darkmode shadow-xl">
+    <section className="mb-6 w-full max-w-[330px] laptop:max-w-[285px] mx-auto laptop:mx-0 sticky top-[4rem] laptop:top-[4.5rem]">
+      <h2 className="mb-1 font-medium bg-darkmode shadow-xl w-fit px-1.5 rounded-sm">
+        Filter:
+      </h2>
+      <section className="categories grid grid-cols-4 h-[25px] bg-darkmode shadow-xl">
         <Tooltip title="Show all">
           <section
             className={`all text-center border border-gray-600 rounded-l-sm ${
@@ -98,7 +100,7 @@ const Filter = () => {
           </section>
         </Tooltip>
       </section>
-    </>
+    </section>
   );
 };
 
