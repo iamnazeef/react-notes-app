@@ -51,6 +51,7 @@ const Header = () => {
         <section className="absolute right-0 rounded-full">
           <Tooltip
             title={`${currentUser?.email ? currentUser.email : "Account"}`}
+            sx={{}}
           >
             <button
               className="border p-1.5 border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
@@ -134,28 +135,3 @@ const Header = () => {
 };
 
 export default Header;
-
-{
-  /* <MenuItem
-            onClick={() => {
-              handleClose();
-              handleSignOut();
-            }}
-            sx={{
-              minWidth: "100%",
-              maxWidth: "100%",
-              minHeight: "25px",
-              maxHeight: "25px",
-              minPaddingY: "10px",
-              maxPaddingY: "10px",
-              ":hover": {
-                backgroundColor: "gray",
-                color: "white",
-              },
-              fontFamily: "manrope",
-              fontWeight: "500",
-            }}
-          >
-            Sign out
-          </MenuItem> */
-}
