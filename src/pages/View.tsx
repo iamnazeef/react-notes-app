@@ -33,6 +33,7 @@ const View = () => {
     created_date: "",
     timestamp: 0,
     user_id: "",
+    tags: "",
   });
 
   const getDocId = async () => {
