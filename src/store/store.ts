@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import notesReducer from "../features/notesSlice";
 import userReducer from "../features/userSlice";
 import filterReducer from "../features/filterSlice";
+import tagsReducer from "../features/tagsSlice";
 
 export const store = configureStore({
   reducer: {
     notes: notesReducer,
     user: userReducer,
     filter: filterReducer,
+    tags: tagsReducer,
   },
 });
 

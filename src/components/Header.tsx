@@ -2,7 +2,6 @@ import { signOut } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import UserIcon from "../assets/icons/UserIcon";
 import Tooltip from "@mui/material/Tooltip";

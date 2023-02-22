@@ -8,6 +8,7 @@ export interface note {
   timestamp: number;
   title: string;
   user_id: string;
+  tags: string;
 }
 
 interface State {
@@ -36,6 +37,7 @@ const notesSlice = createSlice({
           note.title = action.payload.title;
           note.content = action.payload.content;
           note.priority = action.payload.priority;
+          note.tags = action.payload.tags;
         }
       });
     },

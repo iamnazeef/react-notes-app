@@ -17,6 +17,7 @@ const NoteForm = ({ onSubmit, id }: Props) => {
   const [priority, setPriority] = useState<number>(1);
   const [note, setNote] = useState<string>("");
   const [editNoteId, setEditNoteId] = useState<string>("");
+  const [tags, setTags] = useState<string>("");
   const navigate = useNavigate();
   const date: Date = new Date();
   const notes = useSelector((state: RootState) => state.notes.notes);
@@ -35,6 +36,7 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       timestamp: Date.now(),
       title: title,
       user_id: auth.currentUser!.uid,
+      tags: tags,
     });
 
     navigate("..");
@@ -50,6 +52,7 @@ const NoteForm = ({ onSubmit, id }: Props) => {
           setNote(note.content);
           setNoteLength(note.content.length);
           setEditNoteId(note.note_id);
+          setTags(note.tags);
         }
       });
     }
@@ -79,6 +82,13 @@ const NoteForm = ({ onSubmit, id }: Props) => {
         <option value="2">Medium priority</option>
         <option value="3">Low priority</option>
       </select>
+      <input
+        className="w-full tracking-wide py-1.5 px-2.5 bg-darkmode border-b border-gray-700 outline-none placeholder:text-lg"
+        placeholder="Tags: #new #imp-note"
+        value={tags}
+        onChange={(event) => setTags(event.target.value)}
+        required
+      />
       <textarea
         name="content"
         id="content"

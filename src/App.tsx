@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
-import New from "./pages/New";
-import View from "./pages/View";
-import Edit from "./pages/Edit";
-import PageNotFound from "./pages/PageNotFound";
+const LazyNew = lazy(() => import("./pages/New"));
+const LazyView = lazy(() => import("./pages/View"));
+const LazyEdit = lazy(() => import("./pages/Edit"));
+const LazyPageNotFound = lazy(() => import("./pages/PageNotFound"));
 import Auth from "./pages/Auth";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { auth, db } from "./firebase/config";
@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { note, reset, save } from "./features/notesSlice";
+import Fallback from "./components/Fallback";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -73,7 +74,9 @@ const App: React.FC = () => {
           path="/new"
           element={
             <ProtectedRoute>
-              <New />
+              <Suspense fallback={<Fallback />}>
+                <LazyNew />
+              </Suspense>
             </ProtectedRoute>
           }
         />
@@ -86,7 +89,9 @@ const App: React.FC = () => {
             index
             element={
               <ProtectedRoute>
-                <View />
+                <Suspense fallback={<Fallback />}>
+                  <LazyView />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -94,12 +99,21 @@ const App: React.FC = () => {
             path="edit"
             element={
               <ProtectedRoute>
-                <Edit />
+                <Suspense fallback={<Fallback />}>
+                  <LazyEdit />
+                </Suspense>
               </ProtectedRoute>
             }
           />
         </Route>
-        <Route path="*" element={<PageNotFound />} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <LazyPageNotFound />
+            </Suspense>
+          }
+        />
       </Routes>
     </div>
   );

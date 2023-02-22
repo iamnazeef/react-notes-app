@@ -18,6 +18,7 @@ const Edit = () => {
         title: note.title,
         content: note.content,
         priority: note.priority,
+        tags: note.tags,
       });
     } catch (error: any) {
       console.error(error.message);

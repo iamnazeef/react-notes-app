@@ -5,6 +5,7 @@ import NoteCard from "../components/NoteCard";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Filter from "../components/Filter";
+import Tags from "../components/Tags";
 
 interface Props {
   isLoading: boolean;
@@ -36,7 +37,10 @@ const Home = ({ isLoading }: Props) => {
     <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
       {notes.length > 0 && (
         <section className="w-full relative max-w-[900px] mx-auto pt-4">
-          <Filter />
+          <section className="block tablet:flex tablet:items-center tablet:justify-between mb-2">
+            <Filter />
+            <Tags />
+          </section>
           <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5 transition-all delay-75 ease-linear">
             {savedNotes}
           </ul>
