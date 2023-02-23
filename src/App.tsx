@@ -17,6 +17,8 @@ import { RootState } from "./store/store";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { note, reset, save } from "./features/notesSlice";
 import Fallback from "./components/Fallback";
+import ViewFallback from "./components/ViewFallback";
+import FormFallback from "./components/FormFallback";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -74,7 +76,7 @@ const App: React.FC = () => {
           path="/new"
           element={
             <ProtectedRoute>
-              <Suspense fallback={<Fallback />}>
+              <Suspense fallback={<FormFallback />}>
                 <LazyNew />
               </Suspense>
             </ProtectedRoute>
@@ -89,7 +91,7 @@ const App: React.FC = () => {
             index
             element={
               <ProtectedRoute>
-                <Suspense fallback={<Fallback />}>
+                <Suspense fallback={<ViewFallback />}>
                   <LazyView />
                 </Suspense>
               </ProtectedRoute>
@@ -99,7 +101,7 @@ const App: React.FC = () => {
             path="edit"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<Fallback />}>
+                <Suspense fallback={<FormFallback />}>
                   <LazyEdit />
                 </Suspense>
               </ProtectedRoute>

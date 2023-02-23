@@ -3,9 +3,9 @@ import { RootState } from "../store/store";
 import AddIcon from "../assets/icons/AddIcon";
 import NoteCard from "../components/NoteCard";
 import { useNavigate } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
 import Filter from "../components/Filter";
 import Tags from "../components/Tags";
+import HomeFallback from "../components/HomeFallback";
 
 interface Props {
   isLoading: boolean;
@@ -37,7 +37,7 @@ const Home = ({ isLoading }: Props) => {
     <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
       {notes.length > 0 && (
         <section className="w-full relative max-w-[900px] mx-auto pt-4">
-          <section className="block tablet:flex tablet:items-center tablet:justify-between mb-2">
+          <section className="block tablet:flex tablet:items-center tablet:justify-between mb-2 gap-2">
             <Filter />
             <Tags />
           </section>
@@ -54,7 +54,7 @@ const Home = ({ isLoading }: Props) => {
               Create notes
             </p>
           )}
-          {isLoading && <CircularProgress sx={{ color: "#4B5563" }} />}
+          {isLoading && <HomeFallback />}
         </section>
       )}
 
