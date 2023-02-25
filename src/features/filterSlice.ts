@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface State {
-  filterBy: number;
+  filterBy: number | string;
 }
 
 const initialState: State = {
@@ -24,8 +24,12 @@ const filterSlice = createSlice({
     showLow: (state) => {
       state.filterBy = 3;
     },
+    showTag: (state, action: PayloadAction<string>) => {
+      state.filterBy = action.payload;
+    },
   },
 });
 
-export const { showAll, showHigh, showMedium, showLow } = filterSlice.actions;
+export const { showAll, showHigh, showMedium, showLow, showTag } =
+  filterSlice.actions;
 export default filterSlice.reducer;

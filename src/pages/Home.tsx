@@ -19,7 +19,9 @@ const Home = ({ isLoading }: Props) => {
   const filteredNotes = notes.filter((note) => {
     if (filterBy !== 0 && filterBy === note.priority) {
       return note;
-    } else if (filterBy === 0) {
+    } else if (typeof filterBy === "string" && filterBy !== "all") {
+      return note.tags.indexOf(filterBy) !== -1;
+    } else if (filterBy === 0 || filterBy === "all") {
       return note;
     }
   });

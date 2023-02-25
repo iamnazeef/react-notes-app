@@ -7,17 +7,18 @@ const HomeFallback = () => {
         <div className="mb-6 w-full max-w-[330px] laptop:max-w-[285px] grid grid-cols-4 h-[25px] bg-darkmode shadow-xl space-x-1">
           {Array(4)
             .fill(0)
-            .map(() => (
+            .map((item, index) => (
               <Skeleton
                 variant="text"
                 sx={{ fontSize: "1.8rem", background: "#3D4551" }}
+                key={index}
               />
             ))}
         </div>
         <div className="mb-4 w-full max-w-[330px] laptop:max-w-[285px] grid grid-cols-4 h-[25px] bg-darkmode shadow-xl space-x-1">
           {Array(4)
             .fill(0)
-            .map(() => (
+            .map((item, index) => (
               <Skeleton
                 variant="rounded"
                 sx={{
@@ -25,6 +26,7 @@ const HomeFallback = () => {
                   background: "#3D4551",
                   borderRadius: "15px",
                 }}
+                key={index}
               />
             ))}
         </div>
@@ -32,7 +34,7 @@ const HomeFallback = () => {
       <div className="notes w-full relative max-w-[900px] mx-auto pt-4 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5 transition-all delay-75 ease-linear">
         {Array(6)
           .fill(0)
-          .map(() => (
+          .map((item, index) => (
             <Skeleton
               variant="rounded"
               sx={{
@@ -45,6 +47,7 @@ const HomeFallback = () => {
                 padding: "2",
                 borderRadius: "10px",
               }}
+              key={index}
             />
           ))}
       </div>

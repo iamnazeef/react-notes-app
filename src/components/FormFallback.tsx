@@ -50,7 +50,7 @@ const FormFallback = () => {
         />
         {Array(6)
           .fill(0)
-          .map(() => (
+          .map((item, index) => (
             <Skeleton
               variant="rounded"
               sx={{
@@ -61,6 +61,7 @@ const FormFallback = () => {
                 maxWidth: "600px",
                 marginBottom: "14px",
               }}
+              key={index}
             />
           ))}
       </div>

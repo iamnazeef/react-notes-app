@@ -3,19 +3,30 @@ import { RootState } from "../store/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addTag, clearTag } from "../features/tagsSlice";
+import { showTag } from "../features/filterSlice";
 
 const Tags = () => {
   const { tags } = useSelector((state: RootState) => state.tags);
   const { notes } = useSelector((state: RootState) => state.notes);
-  let processedTags = tags.map((tag) =>
-    tag.split(" ").filter((tag) => tag.charAt(0) === "#")
-  );
+  const { filterBy } = useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
+
+  const handleTagFilter = (tag: string) => {
+    dispatch(showTag(tag));
+  };
 
   useEffect(() => {
     dispatch(clearTag());
-    for (let i = notes.length - 1; i >= 0; i--) {
-      dispatch(addTag(notes[i].tags));
+    let checker: string[] = [];
+    for (let note of notes) {
+      let tag = note.tags.split(" ").filter((tag) => tag.charAt(0) === "#");
+
+      tag.forEach((item) => {
+        if (!checker.includes(item)) {
+          dispatch(addTag(item));
+          checker.push(item);
+        }
+      });
     }
   }, [notes]);
 
@@ -26,14 +37,34 @@ const Tags = () => {
       </h2>
       <section>
         <ul className="tags flex items-center text-sm space-x-1 justify-start overflow-auto snap-x rounded-full">
+          <li
+            className={`border rounded-full py-1 px-3 border-gray-600 snap-start  ${
+              filterBy === "all" ? "bg-gray-600" : "hover:border-gray-400"
+            }`}
+          >
+            <button
+              className="rounded-full"
+              onClick={() => handleTagFilter("all")}
+            >
+              All
+            </button>
+          </li>
           {tags &&
-            processedTags.map((tag) =>
-              tag.map((item) => (
-                <li className="border rounded-full py-1 px-2 border-gray-600 snap-start hover:border-gray-400">
-                  <button className="rounded-full">{item}</button>
-                </li>
-              ))
-            )}
+            tags.map((tag) => (
+              <li
+                className={`border rounded-full py-1 px-2 border-gray-600 snap-start  ${
+                  filterBy === tag ? "bg-gray-600" : "hover:border-gray-400"
+                }`}
+                key={tag}
+              >
+                <button
+                  className="rounded-full"
+                  onClick={() => handleTagFilter(tag)}
+                >
+                  {tag}
+                </button>
+              </li>
+            ))}
         </ul>
       </section>
     </section>

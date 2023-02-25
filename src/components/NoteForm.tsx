@@ -84,7 +84,7 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       </select>
       <input
         className="w-full tracking-wide py-1.5 px-2.5 bg-darkmode border-b border-gray-700 outline-none placeholder:text-lg"
-        placeholder="Tags: #new #imp-note"
+        placeholder="Tags: #new #imp_note"
         value={tags}
         onChange={(event) => setTags(event.target.value)}
         required
