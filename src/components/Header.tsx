@@ -27,6 +27,7 @@ const Header = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -50,7 +51,6 @@ const Header = () => {
         <section className="absolute right-0 rounded-full">
           <Tooltip
             title={`${currentUser?.email ? currentUser.email : "Account"}`}
-            sx={{}}
           >
             <button
               className="border p-1.5 border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
@@ -109,14 +109,36 @@ const Header = () => {
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
           <section>
-            <p className="p-1 text-sm break-words font-manrope font-normal leading-5 tracking-wide">
+            <p className="py-1 px-4 text-base break-words font-manrope font-normal leading-5 tracking-wide">
               {currentUser?.displayName
                 ? currentUser?.displayName
                 : "User account"}{" "}
               <br /> <span className="text-xs">{currentUser?.email}</span>
             </p>
           </section>
-          <section className="border-t border-gray-400 font-manrope font-medium w-full py-1 hover:bg-[#444547]">
+          <section className="routes border-t border-gray-600 text-[0.950rem] font-manrope font-normal w-full py-1.5 px-4">
+            <button
+              className="hover:underline"
+              onClick={() => {
+                handleClose();
+                navigate("/archive");
+              }}
+            >
+              Archive
+            </button>
+          </section>
+          <section className="routes border-t border-gray-600 text-[0.950rem] font-manrope font-normal w-full py-1.5 px-4">
+            <button
+              className="hover:underline"
+              onClick={() => {
+                handleClose();
+                navigate("/trash");
+              }}
+            >
+              Trash
+            </button>
+          </section>
+          <section className="border-t border-gray-600 text-base font-manrope font-medium w-full py-1 hover:bg-[#444547]">
             <button
               className="w-full mx-auto"
               onClick={() => {

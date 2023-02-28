@@ -2,10 +2,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import AddIcon from "../assets/icons/AddIcon";
 import NoteCard from "../components/NoteCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Filter from "../components/Filter";
 import Tags from "../components/Tags";
 import HomeFallback from "../components/HomeFallback";
+import { Tooltip } from "@mui/material";
 
 interface Props {
   isLoading: boolean;
@@ -28,7 +29,13 @@ const Home = ({ isLoading }: Props) => {
 
   const savedNotes = filteredNotes.map((note) => {
     const link = `/${note!.note_id}`;
-    return <NoteCard link={link} note={note} key={note.note_id} />;
+    return (
+      <Tooltip title={`${note.title}`} key={note.note_id}>
+        <Link to={link}>
+          <NoteCard link={link} note={note} />
+        </Link>
+      </Tooltip>
+    );
   });
 
   const handleNew = () => {

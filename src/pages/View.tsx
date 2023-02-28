@@ -4,25 +4,22 @@ import { RootState } from "../store/store";
 import { useEffect, useState } from "react";
 import { deleteNote, note } from "../features/notesSlice";
 import EditIcon from "../assets/icons/EditIcon";
-import BackIcon from "../assets/icons/BackIcon";
 import DeleteIcon from "../assets/icons/DeleteIcon";
 import { useDispatch } from "react-redux";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "../firebase/config";
+import { getDocs, query, where } from "firebase/firestore";
 import Tooltip from "@mui/material/Tooltip";
+import ArchiveIcon from "../assets/icons/ArchiveIcon";
+import {
+  addToFirebase,
+  colRef,
+  deleteFromFirebase,
+} from "../utils/firebaseMethods";
+import BackIcon from "../assets/icons/BackIcon";
 
 const View = () => {
   const { id } = useParams();
   const { notes } = useSelector((state: RootState) => state.notes);
   const [docId, setDocId] = useState<string>("");
-  const [color, setColor] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentNote, setCurrentNote] = useState<note>({
@@ -37,83 +34,78 @@ const View = () => {
   });
 
   const getDocId = async () => {
-    const notesRef = collection(db, "notes");
-    const q = query(notesRef, where("note_id", "==", id!.toString()));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setDocId(doc.id);
-    });
-  };
-
-  const deleteInFirestore = async () => {
     try {
-      await deleteDoc(doc(db, "notes", docId));
+      const notesRef = colRef("notes");
+      const q = query(notesRef, where("note_id", "==", id!.toString()));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setDocId(doc.id);
+      });
     } catch (error: any) {
       console.error(error.message);
     }
   };
 
-  const handleDelete = (id: string) => {
-    //Redux store data delete
-    dispatch(deleteNote(id));
-
-    //Firestore data delete
-    deleteInFirestore();
-
+  const handelAction = (action: string) => {
+    if (action === "delete") {
+      addToFirebase("trash", currentNote);
+    } else if (action === "archive") {
+      addToFirebase("archive", currentNote);
+    }
+    dispatch(deleteNote(currentNote.note_id));
+    deleteFromFirebase("notes", docId);
     navigate("/");
   };
 
-  const handleGoBack = () => {
-    navigate("..");
-  };
-
-  const handleEdit = () => {
-    navigate(`edit?docid=${docId}`);
-  };
-
-  const getNote = () => {
-    notes.map((note) => {
+  useEffect(() => {
+    notes.map((note: any) => {
       if (id === note.note_id) {
         setCurrentNote(note);
       }
     });
-  };
-
-  useEffect(() => {
-    getNote();
     getDocId();
   }, [notes]);
 
   return (
     <main className="p-3 pt-4 font-manrope w-full bg-darkmode text-gray-200">
       <section className="w-full max-w-[900px] mx-auto">
+        <section className="back-button flex items-baseline space-x-2">
+          <button
+            className="text-xl font-medium hover:underline mb-4"
+            onClick={() => navigate("..")}
+          >
+            &lt; Go back
+          </button>
+        </section>
         <section className="flex justify-between items-start w-full">
-          <h2 className="note-title self-center text-2xl font-semibold break-words max-w-[200px] tablet:max-w-[300px] laptop:max-w-[600px]">
-            {currentNote.title}
-          </h2>
+          <section className="flex items-center justify-start space-x-2 text-xl font-semibold">
+            <h2 className="note-title self-center text-2xl font-semibold break-words max-w-[200px] tablet:max-w-[300px] laptop:max-w-[600px]">
+              {currentNote.title}
+            </h2>
+          </section>
           <section className="flex space-x-1.5 items-center justify-center">
-            <Tooltip title="Delete">
+            <Tooltip title="Move to trash">
               <button
                 className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
-                onClick={() => handleDelete(currentNote.note_id)}
+                onClick={() => handelAction("delete")}
               >
                 <DeleteIcon />
               </button>
             </Tooltip>
             <Tooltip title="Edit">
               <button
-                onClick={handleEdit}
+                onClick={() => navigate(`edit?docid=${docId}`)}
                 className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
               >
                 <EditIcon />
               </button>
             </Tooltip>
-            <Tooltip title="Back">
+            <Tooltip title="Archive">
               <button
-                onClick={handleGoBack}
+                onClick={() => handelAction("archive")}
                 className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
               >
-                <BackIcon />
+                <ArchiveIcon />
               </button>
             </Tooltip>
           </section>

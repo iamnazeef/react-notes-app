@@ -2,7 +2,7 @@ const EditIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="icon icon-tabler icon-tabler-edit h-[22px] w-[22px]"
+      className="icon icon-tabler icon-tabler-edit h-[22px] laptop:h-[24px] w-[22px] laptop:w-[24px]"
       viewBox="0 0 24 24"
       strokeWidth="2"
       stroke="currentColor"

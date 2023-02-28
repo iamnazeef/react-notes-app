@@ -5,6 +5,8 @@ import Header from "./components/Header";
 const LazyNew = lazy(() => import("./pages/New"));
 const LazyView = lazy(() => import("./pages/View"));
 const LazyEdit = lazy(() => import("./pages/Edit"));
+const LazyArchive = lazy(() => import("./pages/Archive"));
+const LazyTrash = lazy(() => import("./pages/Trash"));
 const LazyPageNotFound = lazy(() => import("./pages/PageNotFound"));
 import Auth from "./pages/Auth";
 import ProtectedRoute from "./pages/ProtectedRoute";
@@ -108,6 +110,22 @@ const App: React.FC = () => {
             }
           />
         </Route>
+        <Route
+          path="archive"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <LazyArchive />
+            </Suspense>
+          }
+        />
+        <Route
+          path="trash"
+          element={
+            <Suspense fallback={<Fallback />}>
+              <LazyTrash />
+            </Suspense>
+          }
+        />
         <Route
           path="*"
           element={
