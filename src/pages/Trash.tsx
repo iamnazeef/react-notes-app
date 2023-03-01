@@ -5,17 +5,21 @@ import { note } from "../features/notesSlice";
 import { useNavigate } from "react-router-dom";
 import NoteCard from "../components/NoteCard";
 import {
-  addToFirebase,
   colRef,
   deleteFromFirebase,
+  getNotes,
+  removeFromState,
+  restoreNote,
 } from "../utils/firebaseMethods";
 import { Modal } from "@mui/material";
 import CloseIcon from "../assets/icons/CloseIcon";
+import ArchiveTrashFallback from "../components/ArchiveTrashFallback";
 
 const Trash = () => {
   const navigate = useNavigate();
   const [notes, setNotes] = useState<note[]>([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentNote, setCurrentNote] = useState<note>({
     content: "",
     created_date: "",
@@ -33,32 +37,6 @@ const Trash = () => {
   const handleClose = () => setOpen(false);
   const handleAction = (action: string) => getDocId(action);
 
-  const removeFromState = () => {
-    setNotes(
-      notes.filter((note) => note.note_id !== currentNote.note_id.toString())
-    );
-  };
-
-  const restoreNote = (docId: string) => {
-    try {
-      addToFirebase("notes", currentNote).then(() => deleteNote(docId));
-    } catch (error: any) {
-      console.error(error.message);
-    } finally {
-      handleClose();
-    }
-  };
-
-  const deleteNote = (docId: string) => {
-    try {
-      deleteFromFirebase("trash", docId).then(() => removeFromState());
-    } catch (error: any) {
-      console.error(error.message);
-    } finally {
-      handleClose();
-    }
-  };
-
   const getDocId = async (action: string) => {
     try {
       const notesRef = colRef("trash");
@@ -69,37 +47,27 @@ const Trash = () => {
       await getDocs(q).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           if (action === "delete") {
-            deleteNote(doc.id);
+            deleteFromFirebase("trash", doc.id).then(() =>
+              removeFromState(setNotes, notes, currentNote)
+            );
           } else if (action === "restore") {
-            restoreNote(doc.id);
+            restoreNote("notes", "trash", currentNote, doc.id, setNotes, notes);
           }
         });
       });
     } catch (error: any) {
       console.error(error.message);
+    } finally {
+      handleClose();
     }
   };
 
-  const getNotes = async () => {
-    try {
-      const notesRef = colRef("trash");
-      const q = query(notesRef, where("user_id", "==", auth.currentUser!.uid));
-      await getDocs(q).then((querySnapshot) => {
-        const data: note[] = [];
-        querySnapshot.forEach((doc) => {
-          const d = doc.data();
-          data.push(d as note);
-        });
-        setNotes(data);
-      });
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
+  //TODO
+  // const handleEmptyTrash = () => {};
 
   useEffect(() => {
     if (auth.currentUser?.uid) {
-      getNotes();
+      getNotes(setNotes, "trash").then(() => setIsLoading(false));
     } else {
       navigate("/");
     }
@@ -108,14 +76,26 @@ const Trash = () => {
   return (
     <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
       <section className="w-full relative max-w-[900px] mx-auto pt-4">
-        <section className="text-xl font-medium">
-          <span
-            className="underline hover:no-underline cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            Home
-          </span>{" "}
-          &gt; <h2 className="inline">Trash</h2>
+        <section className="text-xl font-medium flex justify-between items-center">
+          <section>
+            <span
+              className="underline hover:no-underline cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              Home
+            </span>{" "}
+            &gt; <h2 className="inline">Trash</h2>
+          </section>
+          {/* {notes.length > 0 && (
+            <section>
+              <button
+                className="text-lg hover:shadow-md hover:shadow-red-700 px-2.5 py-[0.15rem] hover:bg-red-600 rounded-full underline"
+                onClick={handleEmptyTrash}
+              >
+                <em>Empty trash</em>
+              </button>
+            </section>
+          )} */}
         </section>
         <section className="notes mt-8">
           <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5 transition-all delay-75 ease-linear">
@@ -129,6 +109,14 @@ const Trash = () => {
               </span>
             ))}
           </ul>
+          {notes.length < 1 && !isLoading && (
+            <section className="text-white flex items-center justify-center w-full min-h-[50vh]">
+              <p className="text-3xl tablet:text-4xl font-medium text-gray-600 font-sans">
+                No trashed notes
+              </p>
+            </section>
+          )}
+          {isLoading && <ArchiveTrashFallback />}
           <Modal
             open={open}
             onClose={handleClose}

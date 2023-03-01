@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
 import { auth } from "../firebase/config";
-import {
-  addToFirebase,
-  colRef,
-  deleteFromFirebase,
-} from "../utils/firebaseMethods";
+import { colRef, getNotes, restoreNote } from "../utils/firebaseMethods";
 import { getDocs, query, where } from "firebase/firestore";
 import { note } from "../features/notesSlice";
 import { useNavigate } from "react-router-dom";
 import NoteCard from "../components/NoteCard";
 import { Modal } from "@mui/material";
 import CloseIcon from "../assets/icons/CloseIcon";
+import ArchiveTrashFallback from "../components/ArchiveTrashFallback";
 
 const Archive = () => {
   const navigate = useNavigate();
   const [notes, setNotes] = useState<note[]>([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentNote, setCurrentNote] = useState<note>({
     content: "",
     created_date: "",
@@ -33,23 +31,6 @@ const Archive = () => {
   const handleClose = () => setOpen(false);
   const handleAction = () => getDocId();
 
-  const removeFromState = () => {
-    setNotes(
-      notes.filter((note) => note.note_id !== currentNote.note_id.toString())
-    );
-  };
-
-  const restoreNote = (docId: string) => {
-    try {
-      addToFirebase("notes", currentNote);
-      deleteFromFirebase("archive", docId).then(() => removeFromState());
-    } catch (error: any) {
-      console.error(error.message);
-    } finally {
-      handleClose();
-    }
-  };
-
   const getDocId = async () => {
     try {
       const notesRef = colRef("archive");
@@ -59,34 +40,19 @@ const Archive = () => {
       );
       await getDocs(q).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          restoreNote(doc.id);
+          restoreNote("notes", "archive", currentNote, doc.id, setNotes, notes);
         });
       });
     } catch (error: any) {
       console.error(error.message);
-    }
-  };
-
-  const getNotes = async () => {
-    try {
-      const notesRef = colRef("archive");
-      const q = query(notesRef, where("user_id", "==", auth.currentUser!.uid));
-      await getDocs(q).then((querySnapshot) => {
-        const data: note[] = [];
-        querySnapshot.forEach((doc) => {
-          const d = doc.data();
-          data.push(d as note);
-        });
-        setNotes(data);
-      });
-    } catch (error: any) {
-      console.error(error.message);
+    } finally {
+      handleClose();
     }
   };
 
   useEffect(() => {
     if (auth.currentUser?.uid) {
-      getNotes();
+      getNotes(setNotes, "archive").then(() => setIsLoading(false));
     } else {
       navigate("/");
     }
@@ -106,16 +72,25 @@ const Archive = () => {
         </section>
         <section className="notes mt-8">
           <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5 transition-all delay-75 ease-linear">
-            {notes.map((note) => (
-              <span
-                className="cursor-pointer"
-                onClick={() => handleOpen(note)}
-                key={note.note_id}
-              >
-                <NoteCard link={`/${note.note_id}`} note={note} />
-              </span>
-            ))}
+            {notes &&
+              notes.map((note) => (
+                <span
+                  className="cursor-pointer"
+                  onClick={() => handleOpen(note)}
+                  key={note.note_id}
+                >
+                  <NoteCard link={`/${note.note_id}`} note={note} />
+                </span>
+              ))}
           </ul>
+          {notes.length < 1 && !isLoading && (
+            <section className="text-white flex items-center justify-center w-full min-h-[50vh]">
+              <p className="text-3xl tablet:text-4xl font-medium text-gray-600 font-sans">
+                No archived notes
+              </p>
+            </section>
+          )}
+          {isLoading && <ArchiveTrashFallback />}
           <Modal
             open={open}
             onClose={handleClose}

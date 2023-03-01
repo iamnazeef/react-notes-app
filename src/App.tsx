@@ -21,6 +21,7 @@ import { note, reset, save } from "./features/notesSlice";
 import Fallback from "./components/Fallback";
 import ViewFallback from "./components/ViewFallback";
 import FormFallback from "./components/FormFallback";
+import ArchiveTrashFallback from "./components/ArchiveTrashFallback";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -113,7 +114,7 @@ const App: React.FC = () => {
         <Route
           path="archive"
           element={
-            <Suspense fallback={<Fallback />}>
+            <Suspense fallback={<ArchiveTrashFallback />}>
               <LazyArchive />
             </Suspense>
           }
@@ -121,7 +122,7 @@ const App: React.FC = () => {
         <Route
           path="trash"
           element={
-            <Suspense fallback={<Fallback />}>
+            <Suspense fallback={<ArchiveTrashFallback />}>
               <LazyTrash />
             </Suspense>
           }
