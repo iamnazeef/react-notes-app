@@ -34,7 +34,7 @@ const Header = () => {
 
   return (
     <header className="border-b px-3 py-4 font-manrope sticky top-0 w-full z-10 bg-darkmode text-gray-200 border-gray-700">
-      <section className="flex items-center w-full max-w-[900px] relative mx-auto">
+      <nav className="flex items-center w-full max-w-[900px] relative mx-auto">
         <Link to="/">
           <h1 className="text-xl tablet:text-2xl font-bold text-center">
             Notes App
@@ -150,7 +150,7 @@ const Header = () => {
             </button>
           </section>
         </Menu>
-      </section>
+      </nav>
     </header>
   );
 };

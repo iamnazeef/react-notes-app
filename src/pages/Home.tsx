@@ -30,11 +30,13 @@ const Home = ({ isLoading }: Props) => {
   const savedNotes = filteredNotes.map((note) => {
     const link = `/${note!.note_id}`;
     return (
-      <Tooltip title={`${note.title}`} key={note.note_id}>
-        <Link to={link}>
-          <NoteCard link={link} note={note} />
-        </Link>
-      </Tooltip>
+      <li key={note.note_id}>
+        <Tooltip title={`${note.title}`}>
+          <Link to={link}>
+            <NoteCard link={link} note={note} />
+          </Link>
+        </Tooltip>
+      </li>
     );
   });
 

@@ -8,8 +8,12 @@ import NoteCard from "../components/NoteCard";
 import { Modal } from "@mui/material";
 import CloseIcon from "../assets/icons/CloseIcon";
 import ArchiveTrashFallback from "../components/ArchiveTrashFallback";
+import { RootState } from "../store/store";
+import { useDispatch } from "react-redux";
+import { save } from "../features/notesSlice";
 
 const Archive = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notes, setNotes] = useState<note[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -41,6 +45,7 @@ const Archive = () => {
       await getDocs(q).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           restoreNote("notes", "archive", currentNote, doc.id, setNotes, notes);
+          dispatch(save(currentNote));
         });
       });
     } catch (error: any) {
@@ -74,13 +79,13 @@ const Archive = () => {
           <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5 transition-all delay-75 ease-linear">
             {notes &&
               notes.map((note) => (
-                <span
+                <li
                   className="cursor-pointer"
                   onClick={() => handleOpen(note)}
                   key={note.note_id}
                 >
                   <NoteCard link={`/${note.note_id}`} note={note} />
-                </span>
+                </li>
               ))}
           </ul>
           {notes.length < 1 && !isLoading && (

@@ -1,7 +1,14 @@
-import { getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { auth } from "../firebase/config";
-import { note } from "../features/notesSlice";
+import { auth, db } from "../firebase/config";
+import { note, save } from "../features/notesSlice";
 import { useNavigate } from "react-router-dom";
 import NoteCard from "../components/NoteCard";
 import {
@@ -14,9 +21,11 @@ import {
 import { Modal } from "@mui/material";
 import CloseIcon from "../assets/icons/CloseIcon";
 import ArchiveTrashFallback from "../components/ArchiveTrashFallback";
+import { useDispatch } from "react-redux";
 
 const Trash = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [notes, setNotes] = useState<note[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -52,6 +61,7 @@ const Trash = () => {
             );
           } else if (action === "restore") {
             restoreNote("notes", "trash", currentNote, doc.id, setNotes, notes);
+            dispatch(save(currentNote));
           }
         });
       });
@@ -61,9 +71,6 @@ const Trash = () => {
       handleClose();
     }
   };
-
-  //TODO
-  // const handleEmptyTrash = () => {};
 
   useEffect(() => {
     if (auth.currentUser?.uid) {
@@ -86,27 +93,17 @@ const Trash = () => {
             </span>{" "}
             &gt; <h2 className="inline">Trash</h2>
           </section>
-          {/* {notes.length > 0 && (
-            <section>
-              <button
-                className="text-lg hover:shadow-md hover:shadow-red-700 px-2.5 py-[0.15rem] hover:bg-red-600 rounded-full underline"
-                onClick={handleEmptyTrash}
-              >
-                <em>Empty trash</em>
-              </button>
-            </section>
-          )} */}
         </section>
         <section className="notes mt-8">
           <ul className="notes grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-5 transition-all delay-75 ease-linear">
             {notes.map((note) => (
-              <span
+              <li
                 className="cursor-pointer"
                 onClick={() => handleOpen(note)}
                 key={note.note_id}
               >
                 <NoteCard link={`/${note.note_id}`} note={note} />
-              </span>
+              </li>
             ))}
           </ul>
           {notes.length < 1 && !isLoading && (

@@ -10,7 +10,6 @@ interface Props {
 const NoteCard = ({ link, note }: Props) => {
   const [color, setColor] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const pathname = window.location.pathname;
 
   useEffect(() => {
     if (note.priority === 1) {
@@ -29,7 +28,7 @@ const NoteCard = ({ link, note }: Props) => {
   }, []);
 
   return (
-    <li className="relative w-full min-h-[230px] max-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border border-gray-600 bg-darkmode hover:border-gray-400 overflow-hidden">
+    <section className="relative w-full min-h-[230px] max-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border border-gray-600 bg-darkmode hover:border-gray-400 overflow-hidden">
       <section className="flex items-center justify-between">
         <h2 className="text-lg font-bold tracking-wide break-words max-w-[250px]">
           {note.title.length > 20
@@ -78,7 +77,7 @@ const NoteCard = ({ link, note }: Props) => {
             ))}
         </ul>
       </section>
-    </li>
+    </section>
   );
 };
 
