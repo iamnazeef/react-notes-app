@@ -6,7 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Filter from "../components/Filter";
 import Tags from "../components/Tags";
 import HomeFallback from "../components/HomeFallback";
-import { Tooltip } from "@mui/material";
+import { IconButton, Snackbar, Tooltip } from "@mui/material";
+import CloseIcon from "../assets/icons/CloseIcon";
+import { useDispatch } from "react-redux";
+import { closeSnackbar } from "../features/snackbar";
+import { note } from "../features/notesSlice";
 
 interface Props {
   isLoading: boolean;
@@ -16,7 +20,22 @@ const Home = ({ isLoading }: Props) => {
   const { notes } = useSelector((state: RootState) => state.notes);
   const navigate = useNavigate();
   const { filterBy } = useSelector((state: RootState) => state.filter);
+  const { open, message } = useSelector((state: RootState) => state.snackbar);
+  const dispatch = useDispatch();
 
+  //Snackbar.
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={() => dispatch(closeSnackbar())}
+    >
+      <CloseIcon />
+    </IconButton>
+  );
+
+  //Filtering notes.
   const filteredNotes = notes.filter((note) => {
     if (filterBy !== 0 && filterBy === note.priority) {
       return note;
@@ -27,12 +46,13 @@ const Home = ({ isLoading }: Props) => {
     }
   });
 
-  const savedNotes = filteredNotes.map((note) => {
+  //Notes to display.
+  const savedNotes = filteredNotes.map((note: note) => {
     const link = `/${note!.note_id}`;
     return (
       <li key={note.note_id}>
         <Tooltip title={`${note.title}`}>
-          <Link to={link}>
+          <Link to={link} aria-label="View note">
             <NoteCard link={link} note={note} />
           </Link>
         </Tooltip>
@@ -40,9 +60,8 @@ const Home = ({ isLoading }: Props) => {
     );
   });
 
-  const handleNew = () => {
-    navigate("/new");
-  };
+  //Create new note.
+  const handleNew = () => navigate("/new");
 
   return (
     <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
@@ -68,7 +87,13 @@ const Home = ({ isLoading }: Props) => {
           {isLoading && <HomeFallback />}
         </section>
       )}
-
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => dispatch(closeSnackbar())}
+        message={message}
+        action={action}
+      />
       <section className="create-note fixed right-12 bg-darkmode bottom-24 tablet:hidden rounded-full">
         <button
           onClick={handleNew}

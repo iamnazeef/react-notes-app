@@ -3,6 +3,7 @@ import notesReducer from "../features/notesSlice";
 import userReducer from "../features/userSlice";
 import filterReducer from "../features/filterSlice";
 import tagsReducer from "../features/tagsSlice";
+import snackbarReducer from "../features/snackbar";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     user: userReducer,
     filter: filterReducer,
     tags: tagsReducer,
+    snackbar: snackbarReducer
   },
 });
 

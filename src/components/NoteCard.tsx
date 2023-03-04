@@ -30,10 +30,8 @@ const NoteCard = ({ link, note }: Props) => {
   return (
     <section className="relative w-full min-h-[230px] max-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border border-gray-600 bg-darkmode hover:border-gray-400 overflow-hidden">
       <section className="flex items-center justify-between">
-        <h2 className="text-lg font-bold tracking-wide break-words max-w-[250px]">
-          {note.title.length > 20
-            ? `${note.title.substring(0, 20)}...`
-            : `${note.title}`}
+        <h2 className="text-lg font-bold tracking-wide break-words max-w-[290px] whitespace-nowrap overflow-hidden text-ellipsis">
+          {note.title}
         </h2>
         <Tooltip
           title={`${

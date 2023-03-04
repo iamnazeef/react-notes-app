@@ -1,8 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useEffect, useState } from "react";
-import { deleteNote, note } from "../features/notesSlice";
+import { deleteNote, note, save } from "../features/notesSlice";
 import EditIcon from "../assets/icons/EditIcon";
 import DeleteIcon from "../assets/icons/DeleteIcon";
 import { useDispatch } from "react-redux";
@@ -14,10 +14,12 @@ import {
   colRef,
   deleteFromFirebase,
 } from "../utils/firebaseMethods";
-import BackIcon from "../assets/icons/BackIcon";
+import UnarchiveIcon from "../assets/icons/UnarchiveIcon";
+import { openSnackbar, snackMessage } from "../features/snackbar";
 
 const View = () => {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const { notes } = useSelector((state: RootState) => state.notes);
   const [docId, setDocId] = useState<string>("");
   const dispatch = useDispatch();
@@ -33,12 +35,15 @@ const View = () => {
     tags: "",
   });
 
-  const getDocId = async () => {
+  const getDocId = async (col: string) => {
     try {
-      const notesRef = colRef("notes");
+      const notesRef = colRef(col);
       const q = query(notesRef, where("note_id", "==", id!.toString()));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
+        if (col === "archive") {
+          setCurrentNote(doc.data() as note);
+        }
         setDocId(doc.id);
       });
     } catch (error: any) {
@@ -49,21 +54,37 @@ const View = () => {
   const handelAction = (action: string) => {
     if (action === "delete") {
       addToFirebase("trash", currentNote);
+      dispatch(snackMessage("Moved note to trash"));
     } else if (action === "archive") {
       addToFirebase("archive", currentNote);
+      dispatch(snackMessage("Note archived"));
+    } else if (action === "unarchive") {
+      addToFirebase("notes", currentNote);
+      deleteFromFirebase("archive", docId);
+      dispatch(save(currentNote));
+      dispatch(snackMessage("Note unarchived"));
+      navigate("/archive");
     }
-    dispatch(deleteNote(currentNote.note_id));
-    deleteFromFirebase("notes", docId);
-    navigate("/");
+    dispatch(openSnackbar());
+    if (action !== "unarchive") {
+      dispatch(deleteNote(currentNote.note_id));
+      deleteFromFirebase("notes", docId);
+      navigate("/");
+    }
   };
 
   useEffect(() => {
-    notes.map((note: any) => {
+    notes.map((note: note) => {
       if (id === note.note_id) {
         setCurrentNote(note);
       }
     });
-    getDocId();
+
+    if (searchParams.get("isArchived") === "true") {
+      getDocId("archive");
+    } else {
+      getDocId("notes");
+    }
   }, [notes]);
 
   return (
@@ -72,7 +93,9 @@ const View = () => {
         <section className="back-button flex items-baseline space-x-2">
           <button
             className="text-xl font-medium hover:underline mb-4"
-            onClick={() => navigate("..")}
+            onClick={() =>
+              navigate(`${searchParams.get("isArchived") ? "/archive" : "/"}`)
+            }
           >
             &lt; Go back
           </button>
@@ -80,40 +103,60 @@ const View = () => {
         <section className="flex justify-between items-start w-full">
           <section className="flex items-center justify-start space-x-2 text-xl font-semibold">
             <h2 className="note-title self-center text-2xl font-semibold break-words max-w-[200px] tablet:max-w-[300px] laptop:max-w-[600px]">
-              {currentNote.title}
+              {currentNote.title ? currentNote.title : "Loading..."}
             </h2>
           </section>
           <section className="flex space-x-1.5 items-center justify-center">
-            <Tooltip title="Move to trash">
-              <button
-                className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
-                onClick={() => handelAction("delete")}
-              >
-                <DeleteIcon />
-              </button>
-            </Tooltip>
-            <Tooltip title="Edit">
-              <button
-                onClick={() => navigate(`edit?docid=${docId}`)}
-                className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
-              >
-                <EditIcon />
-              </button>
-            </Tooltip>
-            <Tooltip title="Archive">
-              <button
-                onClick={() => handelAction("archive")}
-                className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
-              >
-                <ArchiveIcon />
-              </button>
+            {!searchParams.get("isArchived") && (
+              <Tooltip title="Move to trash">
+                <button
+                  className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
+                  onClick={() => handelAction("delete")}
+                >
+                  <DeleteIcon />
+                </button>
+              </Tooltip>
+            )}
+            {!searchParams.get("isArchived") && (
+              <Tooltip title="Edit">
+                <button
+                  onClick={() => navigate(`edit?docid=${docId}`)}
+                  className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
+                >
+                  <EditIcon />
+                </button>
+              </Tooltip>
+            )}
+            <Tooltip
+              title={`${
+                searchParams.get("isArchived") ? "Unarchive" : "Archive"
+              }`}
+            >
+              {!searchParams.get("isArchived") ? (
+                <button
+                  onClick={() => handelAction("archive")}
+                  className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
+                >
+                  <ArchiveIcon />
+                </button>
+              ) : (
+                <button
+                  onClick={() => handelAction("unarchive")}
+                  className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
+                >
+                  <UnarchiveIcon />
+                </button>
+              )}
             </Tooltip>
           </section>
         </section>
         <section className="mt-5">
           <section className="flex justify-start items-center space-x-2.5">
             <section className="note-creation-date text-sm mt-[0.390rem] font-medium text-gray-500">
-              Created on: {currentNote.created_date}
+              Created on:{" "}
+              {currentNote.created_date
+                ? currentNote.created_date
+                : "00-00-0000"}
             </section>
             <Tooltip
               title={`${
@@ -130,21 +173,25 @@ const View = () => {
                     ? "bg-red-500 border-red-500"
                     : currentNote.priority === 2
                     ? "bg-yellow-500 border-yellow-500"
-                    : "bg-green-500 border-green-500"
+                    : currentNote.priority === 3
+                    ? "bg-green-500 border-green-500"
+                    : "bg-gray-300 border-gray-300"
                 }`}
                 aria-label={`${
                   currentNote.priority === 1
                     ? "High priority"
                     : currentNote.priority === 2
                     ? "Medium priority"
-                    : "Low priority"
+                    : currentNote.priority === 3
+                    ? "Low priority"
+                    : "Priority"
                 }`}
               ></div>
             </Tooltip>
           </section>
           <section className="note-content mt-2">
             <pre className="font-manrope whitespace-pre-wrap text-base leading-8 tracking-wide">
-              {currentNote.content}
+              {currentNote.content ? currentNote.content : "..."}
             </pre>
           </section>
         </section>

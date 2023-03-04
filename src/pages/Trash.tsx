@@ -1,13 +1,6 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { auth, db } from "../firebase/config";
+import { auth } from "../firebase/config";
 import { note, save } from "../features/notesSlice";
 import { useNavigate } from "react-router-dom";
 import NoteCard from "../components/NoteCard";
@@ -18,14 +11,24 @@ import {
   removeFromState,
   restoreNote,
 } from "../utils/firebaseMethods";
-import { Modal } from "@mui/material";
+import { IconButton, Modal, Snackbar } from "@mui/material";
 import CloseIcon from "../assets/icons/CloseIcon";
 import ArchiveTrashFallback from "../components/ArchiveTrashFallback";
 import { useDispatch } from "react-redux";
+import {
+  closeSnackbar,
+  openSnackbar,
+  snackMessage,
+} from "../features/snackbar";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const Trash = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { open: openSnack, message } = useSelector(
+    (state: RootState) => state.snackbar
+  );
   const [notes, setNotes] = useState<note[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -53,24 +56,51 @@ const Trash = () => {
         notesRef,
         where("note_id", "==", currentNote.note_id.toString())
       );
-      await getDocs(q).then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          if (action === "delete") {
-            deleteFromFirebase("trash", doc.id).then(() =>
-              removeFromState(setNotes, notes, currentNote)
-            );
-          } else if (action === "restore") {
-            restoreNote("notes", "trash", currentNote, doc.id, setNotes, notes);
-            dispatch(save(currentNote));
-          }
+      await getDocs(q)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            if (action === "delete") {
+              deleteFromFirebase("trash", doc.id).then(() =>
+                removeFromState(setNotes, notes, currentNote)
+              );
+            } else if (action === "restore") {
+              restoreNote(
+                "notes",
+                "trash",
+                currentNote,
+                doc.id,
+                setNotes,
+                notes
+              );
+              dispatch(save(currentNote));
+            }
+          });
+        })
+        .then(() => {
+          dispatch(
+            snackMessage(
+              `${action === "delete" ? "Deleted note" : "Restored note"}`
+            )
+          );
+          dispatch(openSnackbar());
         });
-      });
     } catch (error: any) {
       console.error(error.message);
     } finally {
       handleClose();
     }
   };
+
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={() => dispatch(closeSnackbar())}
+    >
+      <CloseIcon />
+    </IconButton>
+  );
 
   useEffect(() => {
     if (auth.currentUser?.uid) {
@@ -106,6 +136,13 @@ const Trash = () => {
               </li>
             ))}
           </ul>
+          <Snackbar
+            open={openSnack}
+            autoHideDuration={6000}
+            onClose={() => dispatch(closeSnackbar())}
+            message={message}
+            action={action}
+          />
           {notes.length < 1 && !isLoading && (
             <section className="text-white flex items-center justify-center w-full min-h-[50vh]">
               <p className="text-3xl tablet:text-4xl font-medium text-gray-600 font-sans">
