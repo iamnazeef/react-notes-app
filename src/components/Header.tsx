@@ -37,7 +37,7 @@ const Header = () => {
       <nav className="flex items-center w-full max-w-[900px] relative mx-auto">
         <Link to="/">
           <h1 className="text-xl tablet:text-2xl font-bold text-center">
-            Notes App
+            Noteu
           </h1>
         </Link>
         <section className="hidden tablet:block absolute right-[4rem] rounded-full">
