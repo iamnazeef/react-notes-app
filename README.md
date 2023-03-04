@@ -1,4 +1,4 @@
-# Notes App
+# Noteu
 A simple notes app to make your life easier and organized.
 
 ## Contributing
