@@ -28,4 +28,4 @@ A simple notes app to make your life easier and organized.
   - Netlify deploys latest changes to [noteu.netlify.app](https://noteu.netlify.app/)
   
 ## Author
-Nazeef Muhammed ([@iamnazeef](http://iamnazeef.netlify.app/))
+Nazeef ([@iamnazeef](http://iamnazeef.netlify.app/))
