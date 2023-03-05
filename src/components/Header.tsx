@@ -43,24 +43,24 @@ const Header = () => {
         <section className="hidden tablet:block absolute right-[4rem] rounded-full">
           <button
             onClick={handleNew}
-            className="py-[0.300rem] px-4 border border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
+            className="py-[0.100rem] px-4 bg-purple-700 rounded-md text-lg hover:bg-purple-600 font-semibold"
           >
-            Create note
+            Create
           </button>
         </section>
-        <section className="absolute right-0 rounded-full">
+        <section className="absolute right-0 rounded-full flex align-middle">
           <Tooltip
             title={`${currentUser?.email ? currentUser.email : "Account"}`}
           >
             <button
-              className="border p-1.5 border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
+              className="border border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
               onClick={handleClick}
             >
               {currentUser?.photoURL ? (
                 <img
                   src={currentUser.photoURL}
                   alt={currentUser.displayName || "User account"}
-                  className="w-[26px] h-[26px] rounded-full"
+                  className="w-[30px] h-[30px] rounded-full"
                 />
               ) : (
                 <UserIcon />
