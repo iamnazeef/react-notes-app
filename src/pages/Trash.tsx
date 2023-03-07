@@ -145,7 +145,7 @@ const Trash = () => {
           />
           {notes.length < 1 && !isLoading && (
             <section className="text-white flex items-center justify-center w-full min-h-[50vh]">
-              <p className="text-3xl tablet:text-4xl font-medium text-gray-600 font-sans">
+              <p className="text-3xl tablet:text-4xl font-medium text-[#CCCCCC] font-sans">
                 No trashed notes
               </p>
             </section>

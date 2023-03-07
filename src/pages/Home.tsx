@@ -23,8 +23,7 @@ const Home = ({ isLoading }: Props) => {
   const { open, message } = useSelector((state: RootState) => state.snackbar);
   const dispatch = useDispatch();
 
-  //Snackbar.
-  const action = (
+  const snackbarAction = (
     <IconButton
       size="small"
       aria-label="close"
@@ -35,7 +34,6 @@ const Home = ({ isLoading }: Props) => {
     </IconButton>
   );
 
-  //Filtering notes.
   const filteredNotes = notes.filter((note) => {
     if (filterBy !== 0 && filterBy === note.priority) {
       return note;
@@ -46,7 +44,6 @@ const Home = ({ isLoading }: Props) => {
     }
   });
 
-  //Notes to display.
   const savedNotes = filteredNotes.map((note: note) => {
     const link = `/${note!.note_id}`;
     return (
@@ -60,8 +57,7 @@ const Home = ({ isLoading }: Props) => {
     );
   });
 
-  //Create new note.
-  const handleNew = () => navigate("/new");
+  const createNote = () => navigate("/new");
 
   return (
     <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
@@ -80,7 +76,7 @@ const Home = ({ isLoading }: Props) => {
       {notes.length < 1 && (
         <section className="flex justify-center items-center min-h-[65vh]">
           {!isLoading && (
-            <p className="text-3xl tablet:text-4xl font-medium text-gray-600 font-sans">
+            <p className="text-3xl tablet:text-4xl font-medium text-[#CCCCCC] font-sans">
               Create notes
             </p>
           )}
@@ -92,12 +88,13 @@ const Home = ({ isLoading }: Props) => {
         autoHideDuration={6000}
         onClose={() => dispatch(closeSnackbar())}
         message={message}
-        action={action}
+        action={snackbarAction}
       />
       <section className="create-note fixed right-12 bg-darkmode bottom-24 tablet:hidden rounded-full">
         <button
-          onClick={handleNew}
+          onClick={createNote}
           className="border-2 drop-shadow-2xl border-gray-600 p-3 shadow-3xl rounded-full hover:border-gray-400"
+          aria-label="Create new note"
         >
           <AddIcon />
         </button>
