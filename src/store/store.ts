@@ -4,6 +4,8 @@ import userReducer from "../features/userSlice";
 import filterReducer from "../features/filterSlice";
 import tagsReducer from "../features/tagsSlice";
 import snackbarReducer from "../features/snackbar";
+import themeReducer from "../features/themeSlice";
+
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +13,8 @@ export const store = configureStore({
     user: userReducer,
     filter: filterReducer,
     tags: tagsReducer,
-    snackbar: snackbarReducer
+    snackbar: snackbarReducer,
+    theme: themeReducer,
   },
 });
 

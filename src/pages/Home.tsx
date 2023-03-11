@@ -60,7 +60,7 @@ const Home = ({ isLoading }: Props) => {
   const createNote = () => navigate("/new");
 
   return (
-    <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
+    <main className="py-3 px-2.5">
       {notes.length > 0 && (
         <section className="w-full relative max-w-[900px] mx-auto pt-4">
           <section className="block tablet:flex tablet:items-center tablet:justify-between mb-2 gap-2">
@@ -76,7 +76,7 @@ const Home = ({ isLoading }: Props) => {
       {notes.length < 1 && (
         <section className="flex justify-center items-center min-h-[65vh]">
           {!isLoading && (
-            <p className="text-3xl tablet:text-4xl font-medium text-[#CCCCCC] font-sans">
+            <p className="text-3xl tablet:text-4xl font-medium text-[#a0a0a0] font-sans">
               Create notes
             </p>
           )}

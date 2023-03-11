@@ -21,6 +21,7 @@ const View = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const { notes } = useSelector((state: RootState) => state.notes);
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
   const [docId, setDocId] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const View = () => {
   }, [notes]);
 
   return (
-    <main className="p-3 pt-4 font-manrope w-full bg-darkmode text-gray-200">
+    <main className="p-3 pt-4 w-full">
       <section className="w-full max-w-[900px] mx-auto">
         <section className="back-button flex items-baseline space-x-2">
           <button
@@ -110,8 +111,10 @@ const View = () => {
             {!searchParams.get("isArchived") && (
               <Tooltip title="Move to trash">
                 <button
-                  className="p-2 rounded-full hover:text-red-500 hover:bg-gray-700"
                   onClick={() => handelAction("delete")}
+                  className={`p-2 rounded-full hover:text-red-500 ${
+                    isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  }`}
                 >
                   <DeleteIcon />
                 </button>
@@ -121,7 +124,9 @@ const View = () => {
               <Tooltip title="Edit">
                 <button
                   onClick={() => navigate(`edit?docid=${docId}`)}
-                  className="p-2 rounded-full hover:text-yellow-400 hover:bg-gray-700"
+                  className={`p-2 rounded-full hover:text-yellow-400 ${
+                    isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  }`}
                 >
                   <EditIcon />
                 </button>
@@ -135,14 +140,18 @@ const View = () => {
               {!searchParams.get("isArchived") ? (
                 <button
                   onClick={() => handelAction("archive")}
-                  className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
+                  className={`p-2 rounded-full hover:text-green-500 ${
+                    isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  }`}
                 >
                   <ArchiveIcon />
                 </button>
               ) : (
                 <button
                   onClick={() => handelAction("unarchive")}
-                  className="p-2 rounded-full hover:text-green-500 hover:bg-gray-700"
+                  className={`p-2 rounded-full hover:text-green-500 ${
+                    isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+                  }`}
                 >
                   <UnarchiveIcon />
                 </button>

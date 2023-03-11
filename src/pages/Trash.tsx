@@ -111,7 +111,7 @@ const Trash = () => {
   }, []);
 
   return (
-    <main className="py-3 px-2.5 font-manrope w-full bg-darkmode text-gray-200">
+    <main className="py-3 px-2.5">
       <section className="w-full relative max-w-[900px] mx-auto pt-4">
         <section className="text-xl font-medium flex justify-between items-center">
           <section>
@@ -145,7 +145,7 @@ const Trash = () => {
           />
           {notes.length < 1 && !isLoading && (
             <section className="text-white flex items-center justify-center w-full min-h-[50vh]">
-              <p className="text-3xl tablet:text-4xl font-medium text-[#CCCCCC] font-sans">
+              <p className="text-3xl tablet:text-4xl font-medium text-[#a0a0a0] font-sans">
                 No trashed notes
               </p>
             </section>

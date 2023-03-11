@@ -1,8 +1,12 @@
 import { Skeleton } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const FormFallback = () => {
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
+
   return (
-    <div className="px-3 pt-4 font-manrope bg-darkmode text-gray-200 w-full max-w-[900px] mx-auto">
+    <div className="px-3 pt-4 w-full max-w-[900px] mx-auto">
       <div>
         <Skeleton
           variant="rounded"
@@ -12,6 +16,7 @@ const FormFallback = () => {
             borderRadius: "5px",
             width: "100%",
             maxWidth: "180px",
+            bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
           }}
         />
       </div>
@@ -24,6 +29,7 @@ const FormFallback = () => {
             borderRadius: "5px",
             width: "100%",
             maxWidth: "600px",
+            bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
           }}
         />
         <Skeleton
@@ -35,6 +41,7 @@ const FormFallback = () => {
             width: "100%",
             maxWidth: "200px",
             marginY: "12px",
+            bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
           }}
         />
         <Skeleton
@@ -46,6 +53,7 @@ const FormFallback = () => {
             width: "100%",
             maxWidth: "600px",
             marginBottom: "30px",
+            bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
           }}
         />
         {Array(6)
@@ -60,6 +68,7 @@ const FormFallback = () => {
                 width: "100%",
                 maxWidth: "600px",
                 marginBottom: "14px",
+                bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
               }}
               key={index}
             />

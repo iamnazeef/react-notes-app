@@ -5,68 +5,99 @@ import Menu from "@mui/material/Menu";
 import { useState } from "react";
 import UserIcon from "../assets/icons/UserIcon";
 import Tooltip from "@mui/material/Tooltip";
+import LightModeIcon from "../assets/icons/LightModeIcon";
+import { useDispatch } from "react-redux";
+import { toggleDarkMode, toggleLightMode } from "../features/themeSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import DarkModeIcon from "../assets/icons/DarkModeIcon";
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { currentUser } = auth;
-
-  const handleNew = () => {
-    navigate("/new");
-  };
-
-  const handleSignOut = () => {
-    signOut(auth)
-      .then((res) => {
-        navigate("/auth", { replace: true });
-      })
-      .catch((error) => console.error(error.message));
-  };
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
+
+  const handleNew = () => navigate("/new");
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/auth", { replace: true });
+      })
+      .catch((error) => console.error(error.message));
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleTheme = () => {
+    if (isDarkMode === true) {
+      dispatch(toggleLightMode());
+    } else {
+      dispatch(toggleDarkMode());
+    }
+  };
+
   return (
-    <header className="border-b px-3 py-4 font-manrope sticky top-0 w-full z-10 bg-darkmode text-gray-200 border-gray-700">
-      <nav className="flex items-center w-full max-w-[900px] relative mx-auto">
-        <Link to="/">
-          <h1 className="text-xl tablet:text-2xl font-bold text-center">
-            Noteu
-          </h1>
-        </Link>
-        <section className="hidden tablet:block absolute right-[4rem] rounded-full">
-          <button
-            onClick={handleNew}
-            className="py-[0.100rem] px-4 bg-purple-700 rounded-md text-lg hover:bg-purple-600 font-semibold"
-          >
-            Create
-          </button>
+    <header
+      className={`border-b px-2.5 h-14 flex align-middle sticky top-0 w-full z-10 border-gray-700 ${
+        isDarkMode ? "bg-darkmode text-gray-200" : "bg-white text-gray-900"
+      } transition-colors delay-[10] ease-linear`}
+    >
+      <nav className="w-full max-w-[900px] relative mx-auto flex items-center justify-between">
+        <section>
+          <Link to="/">
+            <h1 className="text-xl tablet:text-2xl font-bold tracking-widest">
+              Noteu
+            </h1>
+          </Link>
         </section>
-        <section className="absolute right-0 rounded-full flex align-middle">
-          <Tooltip
-            title={`${currentUser?.email ? currentUser.email : "Account"}`}
-          >
+        <section className="flex items-center gap-3">
+          <section className="hidden tablet:flex align-middle">
             <button
-              className="border border-gray-600 bg-darkmode rounded-full text-lg hover:border-gray-400"
-              onClick={handleClick}
+              onClick={handleNew}
+              className="py-1 px-4 bg-purple-700 rounded-md text-lg hover:bg-purple-600 font-semibold text-white"
             >
-              {currentUser?.photoURL ? (
-                <img
-                  src={currentUser.photoURL}
-                  alt={currentUser.displayName || "User account"}
-                  className="w-[30px] h-[30px] rounded-full"
-                />
-              ) : (
-                <UserIcon />
-              )}
+              Create
             </button>
-          </Tooltip>
+          </section>
+          <section className="flex align-middle">
+            <button
+              onClick={handleTheme}
+              className={`rounded-full p-1.5 ${
+                isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"
+              } transition-colors delay-[10] ease-linear`}
+            >
+              {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}
+            </button>
+          </section>
+          <section className="flex align-middle">
+            <Tooltip
+              title={`${currentUser?.email ? currentUser.email : "Account"}`}
+            >
+              <button
+                className="rounded-full text-lg p-1"
+                onClick={handleClick}
+              >
+                {currentUser?.photoURL ? (
+                  <img
+                    src={currentUser.photoURL}
+                    alt={currentUser.displayName || "User account"}
+                    className="w-[34px] h-[34px] rounded-full"
+                  />
+                ) : (
+                  <UserIcon />
+                )}
+              </button>
+            </Tooltip>
+          </section>
         </section>
         <Menu
           id="basic-menu"

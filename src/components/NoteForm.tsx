@@ -20,7 +20,8 @@ const NoteForm = ({ onSubmit, id }: Props) => {
   const [tags, setTags] = useState<string>("");
   const navigate = useNavigate();
   const date: Date = new Date();
-  const notes = useSelector((state: RootState) => state.notes.notes);
+  const { notes } = useSelector((state: RootState) => state.notes);
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,7 +65,11 @@ const NoteForm = ({ onSubmit, id }: Props) => {
         type="text"
         name="title"
         id="title"
-        className="w-full tracking-wide py-1.5 px-2.5 bg-darkmode border-b border-gray-700 outline-none placeholder:text-xl"
+        className={`w-full tracking-wide py-1.5 px-2.5 bg-transparent text-xl border ${
+          isDarkMode
+            ? "border-gray-400 placeholder:text-gray-400"
+            : "border-gray-600 placeholder:text-gray-600"
+        }`}
         placeholder="Title"
         value={title}
         onChange={(event) => setTitle(event.target.value)}
@@ -74,7 +79,11 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       <select
         name="importance"
         id="importance"
-        className="p-1.5 text-lg text-gray-400 tracking-wide w-full max-w-[200px] bg-darkmode outline-none border-b border-gray-700"
+        className={`p-1.5 text-lg tracking-wide w-full max-w-[200px] bg-transparent ${
+          isDarkMode
+            ? "text-gray-200 bg-gray-500 rounded-sm"
+            : "text-gray-50 bg-gray-500"
+        }`}
         value={priority}
         onChange={(event) => setPriority(Number(event.target.value))}
       >
@@ -83,7 +92,11 @@ const NoteForm = ({ onSubmit, id }: Props) => {
         <option value="3">Low priority</option>
       </select>
       <input
-        className="w-full tracking-wide py-1.5 px-2.5 bg-darkmode border-b border-gray-700 outline-none placeholder:text-lg"
+        className={`w-full border tracking-wide py-1.5 px-2.5 bg-transparent text-lg ${
+          isDarkMode
+            ? "border-gray-400 placeholder:text-gray-400"
+            : "border-gray-600 placeholder:text-gray-600"
+        }`}
         placeholder="Tags: #new #imp_note"
         value={tags}
         onChange={(event) => setTags(event.target.value)}
@@ -92,8 +105,12 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       <textarea
         name="content"
         id="content"
-        className="block font-normal tracking-wider w-full py-1.5 px-2.5 resize-none bg-darkmode border-b border-gray-700 outline-none placeholder:text-base"
-        rows={12}
+        className={`block border font-normal tracking-wider w-full py-1.5 px-2.5 bg-transparent text-lg ${
+          isDarkMode
+            ? "border-gray-400 placeholder:text-gray-400"
+            : "border-gray-600 placeholder:text-gray-600"
+        }`}
+        rows={9}
         placeholder="Write..."
         value={note}
         onChange={(event) => {
@@ -106,20 +123,28 @@ const NoteForm = ({ onSubmit, id }: Props) => {
         <section className="space-x-2.5">
           <button
             type="submit"
-            className="border font-medium py-1 px-2.5 border-gray-600 rounded-[0.225rem] bg-darkmode hover:border-gray-400"
+            className={`font-medium py-[0.15rem] px-2.5 rounded-[0.225rem] border border-gray-600 ${
+              isDarkMode ? "hover:bg-gray-600" : "hover:bg-gray-300"
+            }`}
           >
             Save
           </button>
           <Link to="..">
             <button
               type="button"
-              className="border font-medium py-1 px-2.5 border-gray-600 rounded-[0.225rem] bg-darkmode hover:border-gray-400"
+              className={`font-medium py-[0.15rem] px-2.5 rounded-[0.225rem] border border-gray-600 ${
+                isDarkMode ? "hover:bg-gray-600" : "hover:bg-gray-300"
+              }`}
             >
               Cancel
             </button>
           </Link>
         </section>
-        <section className="space-x-2.5 font-medium break-words text-gray-500">
+        <section
+          className={`space-x-2.5 font-medium break-words ${
+            isDarkMode ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
           <p>Chars: {noteLength}</p>
         </section>
       </section>

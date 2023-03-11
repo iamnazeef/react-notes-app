@@ -1,8 +1,12 @@
 import { Skeleton } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const ViewFallback = () => {
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
+
   return (
-    <div className="p-3 pt-4 font-manrope w-full bg-darkmode text-gray-200">
+    <div className="p-3 pt-4 w-full">
       <div className="w-full max-w-[900px] mx-auto">
         <div className="header w-full flex items-center justify-between">
           <Skeleton
@@ -13,6 +17,7 @@ const ViewFallback = () => {
               borderRadius: "15px",
               width: "100%",
               maxWidth: "200px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
           <Skeleton
@@ -23,6 +28,7 @@ const ViewFallback = () => {
               borderRadius: "15px",
               width: "100%",
               maxWidth: "120px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
         </div>
@@ -35,6 +41,7 @@ const ViewFallback = () => {
               borderRadius: "10px",
               width: "100%",
               maxWidth: "120px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
         </div>
@@ -49,6 +56,7 @@ const ViewFallback = () => {
               width: "100%",
               maxWidth: `500px`,
               marginBottom: "25px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
           <Skeleton
@@ -60,6 +68,7 @@ const ViewFallback = () => {
               width: "100%",
               maxWidth: `300px`,
               marginBottom: "25px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
           <Skeleton
@@ -71,6 +80,7 @@ const ViewFallback = () => {
               width: "100%",
               maxWidth: `350px`,
               marginBottom: "25px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
           <Skeleton
@@ -82,6 +92,7 @@ const ViewFallback = () => {
               width: "100%",
               maxWidth: `600px`,
               marginBottom: "25px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
           <Skeleton
@@ -93,6 +104,7 @@ const ViewFallback = () => {
               width: "100%",
               maxWidth: `250px`,
               marginBottom: "25px",
+              bgcolor: `${isDarkMode ? "#6c757d" : "#EBECF0"}`,
             }}
           />
         </div>

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
@@ -22,10 +22,12 @@ import Fallback from "./components/Fallback";
 import ViewFallback from "./components/ViewFallback";
 import FormFallback from "./components/FormFallback";
 import ArchiveTrashFallback from "./components/ArchiveTrashFallback";
+import { toggleDarkMode, toggleLightMode } from "./features/themeSlice";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getNotes = async () => {
@@ -63,8 +65,28 @@ const App: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  useLayoutEffect(() => {
+    const theme = localStorage.getItem("theme");
+    if (theme) {
+      switch (theme) {
+        case "true":
+          dispatch(toggleDarkMode());
+          break;
+        case "false":
+          dispatch(toggleLightMode());
+          break;
+      }
+    } else {
+      localStorage.setItem("theme", "false");
+    }
+  }, []);
+
   return (
-    <div className="bg-darkmode min-w-screen min-h-screen">
+    <div
+      className={`${
+        isDarkMode ? "bg-darkmode text-gray-200" : "bg-white text-gray-900"
+      } font-manrope min-w-screen min-h-screen transition-colors delay-[10] ease-linear`}
+    >
       {isLoggedIn && <Header />}
       <Routes>
         <Route

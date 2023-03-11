@@ -1,6 +1,8 @@
 import { note } from "../features/notesSlice";
 import Tooltip from "@mui/material/Tooltip";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 interface Props {
   link: string;
@@ -10,6 +12,7 @@ interface Props {
 const NoteCard = ({ link, note }: Props) => {
   const [color, setColor] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
 
   useEffect(() => {
     if (note.priority === 1) {
@@ -28,7 +31,11 @@ const NoteCard = ({ link, note }: Props) => {
   }, []);
 
   return (
-    <section className="relative w-full min-h-[230px] max-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border border-gray-600 bg-darkmode hover:border-gray-400 overflow-hidden">
+    <section
+      className={`relative w-full min-h-[230px] max-h-[230px] max-w-[330px] laptop:min-h-[200px] laptop:max-h-[200px] laptop:max-w-[300px] mx-auto p-2 rounded-md border ${
+        isDarkMode ? "border-gray-600" : "border-gray-900"
+      } hover:border-gray-400 overflow-hidden`}
+    >
       <section className="flex items-center justify-between">
         <h2 className="text-lg font-bold tracking-wide break-words max-w-[290px] whitespace-nowrap overflow-hidden text-ellipsis">
           {note.title}
@@ -62,7 +69,7 @@ const NoteCard = ({ link, note }: Props) => {
             : `${note.content}`}
         </pre>
       </section>
-      <section className="border-t border-t-gray-600 absolute w-full right-0 left-0 bottom-0 bg-darkmode">
+      <section className="border-t border-t-gray-600 absolute w-full right-0 left-0 bottom-0">
         <ul className="tags flex items-center p-1.5 text-sm space-x-1 justify-start overflow-auto">
           {tags &&
             tags.map((tag) => (
