@@ -45,7 +45,7 @@ const Auth = () => {
         <section className="grid laptop:grid-cols-2 mt-5 gap-2 min-h-[80vh]">
           <section className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-1">
             <section className="w-full h-full bg-white p-1">
-              <p className="text-[4rem] leading-snug tablet:text-[6.5rem] laptop:text-8xl laptop:leading-[8rem]">
+              <p className="text-[3rem] leading-snug tablet:text-[5rem] laptop:text-[6rem] laptop:leading-[8rem] break-words">
                 Make your life easier and organized with Noteu
               </p>
             </section>

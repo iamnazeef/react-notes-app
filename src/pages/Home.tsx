@@ -20,6 +20,7 @@ const Home = ({ isLoading }: Props) => {
   const { notes } = useSelector((state: RootState) => state.notes);
   const navigate = useNavigate();
   const { filterBy } = useSelector((state: RootState) => state.filter);
+  const { isDarkMode } = useSelector((state: RootState) => state.theme);
   const { open, message } = useSelector((state: RootState) => state.snackbar);
   const dispatch = useDispatch();
 
@@ -90,7 +91,11 @@ const Home = ({ isLoading }: Props) => {
         message={message}
         action={snackbarAction}
       />
-      <section className="create-note fixed right-12 bg-darkmode bottom-24 tablet:hidden rounded-full">
+      <section
+        className={`create-note fixed right-12 ${
+          isDarkMode ? "bg-darkmode" : "bg-white"
+        }  bottom-24 tablet:hidden rounded-full`}
+      >
         <button
           onClick={createNote}
           className="border-2 drop-shadow-2xl border-gray-600 p-3 shadow-3xl rounded-full hover:border-gray-400"

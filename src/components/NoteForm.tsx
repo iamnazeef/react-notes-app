@@ -79,10 +79,8 @@ const NoteForm = ({ onSubmit, id }: Props) => {
       <select
         name="importance"
         id="importance"
-        className={`p-1.5 text-lg tracking-wide w-full max-w-[200px] bg-transparent ${
-          isDarkMode
-            ? "text-gray-200 bg-gray-500 rounded-sm"
-            : "text-gray-50 bg-gray-500"
+        className={`p-1.5 text-lg tracking-wide w-full max-w-[200px] bg-gray-500 rounded-sm ${
+          isDarkMode ? "text-gray-200" : "text-gray-50"
         }`}
         value={priority}
         onChange={(event) => setPriority(Number(event.target.value))}
