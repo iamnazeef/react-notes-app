@@ -109,7 +109,7 @@ const View = () => {
           </section>
           <section className="flex space-x-1.5 items-center justify-center">
             {!searchParams.get("isArchived") && (
-              <Tooltip title="Move to trash">
+              <Tooltip title="Trash">
                 <button
                   onClick={() => handelAction("delete")}
                   className={`p-2 rounded-full hover:text-red-500 ${
