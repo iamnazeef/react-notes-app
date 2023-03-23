@@ -25,7 +25,7 @@ A simple notes app to make your life easier and organized.
 - Commit your code
 - Submit a PR
 - When PR is merged or code is pushed to ```main```:
-  - Netlify deploys latest changes to [notesbynazeef.netlify.app](https://notesbynazeef.netlify.app/)
+  - Netlify deploys latest changes to [noteu.netlify.app](https://noteu.netlify.app)
   
 ## Author
 Nazeef ([@iamnazeef](http://iamnazeef.netlify.app/))
