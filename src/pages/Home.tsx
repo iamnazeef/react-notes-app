@@ -94,7 +94,7 @@ const Home = ({ isLoading }: Props) => {
       <section
         className={`create-note fixed right-12 ${
           isDarkMode ? "bg-darkmode" : "bg-white"
-        }  bottom-24 tablet:hidden rounded-full`}
+        }  bottom-24 tablet:hidden rounded-full transition-colors delay-[10] ease-linear`}
       >
         <button
           onClick={createNote}

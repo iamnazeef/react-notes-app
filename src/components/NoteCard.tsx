@@ -69,7 +69,11 @@ const NoteCard = ({ link, note }: Props) => {
             : `${note.content}`}
         </pre>
       </section>
-      <section className="border-t border-t-gray-600 absolute w-full right-0 left-0 bottom-0">
+      <section
+        className={`border-t border-t-gray-600 absolute w-full right-0 left-0 bottom-0 ${
+          isDarkMode ? "bg-darkmode" : "bg-white"
+        } transition-colors delay-[10] ease-linear`}
+      >
         <ul className="tags flex items-center p-1.5 text-sm space-x-1 justify-start overflow-auto">
           {tags &&
             tags.map((tag) => (

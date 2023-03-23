@@ -28,9 +28,9 @@ const Filter = () => {
 
   return (
     <section
-      className={`mb-6 w-full max-w-[330px] laptop:max-w-[285px] mx-auto laptop:mx-0 sticky top-[4rem] laptop:top-[4.5rem] ${
+      className={`mb-6 w-full max-w-[330px] laptop:max-w-[285px] mx-auto laptop:mx-0 ${
         isDarkMode ? "bg-darkmode" : "bg-white"
-      } rounded-sm`}
+      } rounded-sm transition-colors delay-[10] ease-linear`}
     >
       <h2 className="mb-1 font-medium w-fit px-1.5 rounded-sm">Filter:</h2>
       <section className="categories grid grid-cols-4 h-[25px]">

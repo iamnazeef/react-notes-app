@@ -4,7 +4,6 @@ import { auth } from "../firebase/config";
 import Menu from "@mui/material/Menu";
 import { useState } from "react";
 import UserIcon from "../assets/icons/UserIcon";
-import Tooltip from "@mui/material/Tooltip";
 import LightModeIcon from "../assets/icons/LightModeIcon";
 import { useDispatch } from "react-redux";
 import { toggleDarkMode, toggleLightMode } from "../features/themeSlice";
@@ -54,7 +53,7 @@ const Header = () => {
       <nav className="w-full max-w-[900px] relative mx-auto flex items-center justify-between">
         <section>
           <Link to="/">
-            <h1 className="text-xl tablet:text-2xl font-bold tracking-widest">
+            <h1 className="text-xl tablet:text-2xl font-medium tracking-widest">
               Noteu
             </h1>
           </Link>
@@ -63,7 +62,7 @@ const Header = () => {
           <section className="hidden tablet:flex align-middle">
             <button
               onClick={handleNew}
-              className="py-1 px-4 bg-purple-700 rounded-md text-lg hover:bg-purple-600 font-semibold text-white"
+              className="py-1 px-4 bg-purple-700 rounded-md text-xl hover:bg-purple-600 font-medium text-white"
             >
               Create
             </button>
@@ -79,24 +78,20 @@ const Header = () => {
             </button>
           </section>
           <section className="flex align-middle">
-            <Tooltip
-              title={`${currentUser?.email ? currentUser.email : "Account"}`}
+            <button
+              className="rounded-full text-lg p-1 hover:opacity-60"
+              onClick={handleClick}
             >
-              <button
-                className="rounded-full text-lg p-1"
-                onClick={handleClick}
-              >
-                {currentUser?.photoURL ? (
-                  <img
-                    src={currentUser.photoURL}
-                    alt={currentUser.displayName || "User account"}
-                    className="w-[34px] h-[34px] rounded-full"
-                  />
-                ) : (
-                  <UserIcon />
-                )}
-              </button>
-            </Tooltip>
+              {currentUser?.photoURL ? (
+                <img
+                  src={currentUser.photoURL}
+                  alt={currentUser.displayName || "User account"}
+                  className="w-[34px] h-[34px] rounded-full"
+                />
+              ) : (
+                <UserIcon />
+              )}
+            </button>
           </section>
         </section>
         <Menu
